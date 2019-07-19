@@ -22,7 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @ApiOperation(value = "회원 가입", notes = "유효성 검사를 통과해야 합니다. 하단의 Model을 참고하세요.")
+    @ApiOperation(value = "회원 가입", notes = "유효성 검사를 수행합니다. 하단의 Models를 참고하세요.")
     @PostMapping("")
     public String signUp(@Validated @RequestBody SignUpReqDto signUpReqDto) {
         User user = userService.signUp(signUpReqDto);
