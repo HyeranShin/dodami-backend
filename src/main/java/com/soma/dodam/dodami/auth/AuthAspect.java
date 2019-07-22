@@ -1,4 +1,4 @@
-package com.soma.dodam.dodami.utils.auth;
+package com.soma.dodam.dodami.auth;
 
 import com.soma.dodam.dodami.domain.User;
 import com.soma.dodam.dodami.exception.UnAuthenticationException;
@@ -39,7 +39,7 @@ public class AuthAspect {
      * @throws Throwable
      */
     //항상 @annotation 패키지 이름을 실제 사용할 annotation 경로로 맞춰줘야 한다.
-    @Around("@annotation(com.soma.dodam.dodami.utils.auth.Auth)")
+    @Around("@annotation(com.soma.dodam.dodami.auth.Auth)")
     public Object around(final ProceedingJoinPoint pjp) throws Throwable {
         final String jwt = httpServletRequest.getHeader(AUTHORIZATION);
         httpServletRequest.setAttribute(USER_KEY, checkAuth(jwt));

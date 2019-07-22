@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -22,15 +23,19 @@ public class User extends BaseTimeEntity {
     private Long idx;
 
     @Column
+    @NotNull
     private String id;
 
     @Column
+    @NotNull
     private String password;
 
     @Column
+    @NotNull
     private String name;
 
     @Column
+    @NotNull
     private String phone;
 
     @Builder

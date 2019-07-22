@@ -1,4 +1,4 @@
-package com.soma.dodam.dodami.utils.auth;
+package com.soma.dodam.dodami.auth;
 
 import java.lang.annotation.*;
 

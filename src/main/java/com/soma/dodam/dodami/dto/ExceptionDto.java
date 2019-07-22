@@ -15,10 +15,10 @@ public class ExceptionDto {
     public final static int NAME_PARSE_INDEX = 8;
     public final static int CODES_FIELD_STRING_INDEX = 1;
 
-    @ApiModelProperty(notes = "에러 발생 원인", example = "id", position = 1)
+    @ApiModelProperty(example = "에러 발생 원인", position = 1)
     private String field;
 
-    @ApiModelProperty(notes = "에러 내용", example = "이미 사용중인 아이디 입니다.", position = 2)
+    @ApiModelProperty(example = "에러 내용", position = 2)
     private String message;
 
     public static ExceptionDto toExceptionDto(ObjectError validError) {
