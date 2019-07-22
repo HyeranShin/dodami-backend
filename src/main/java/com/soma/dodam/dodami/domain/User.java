@@ -45,11 +45,4 @@ public class User extends BaseTimeEntity {
         this.name = name;
         this.phone = phone;
     }
-
-    public boolean matchPasswordBy(SignInReqDto signInReqDto) {
-        if(!this.password.equals(signInReqDto.getPassword())) {
-            throw new NotMatchException("password", "비밀번호가 일치하지 않습니다.");
-        }
-        return true;
-    }
 }

@@ -1,22 +1,21 @@
 package com.soma.dodam.dodami.web;
 
+import com.soma.dodam.dodami.auth.Auth;
+import com.soma.dodam.dodami.auth.AuthAspect;
 import com.soma.dodam.dodami.domain.User;
 import com.soma.dodam.dodami.dto.ExceptionDto;
+import com.soma.dodam.dodami.dto.ProfileResDto;
 import com.soma.dodam.dodami.dto.SignInReqDto;
 import com.soma.dodam.dodami.dto.SignUpReqDto;
 import com.soma.dodam.dodami.service.JwtService;
 import com.soma.dodam.dodami.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Api(description = "유저 REST API")
 @RestController
@@ -59,5 +58,19 @@ public class UserController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("token", token);
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).build();
+    }
+
+    @ApiOperation(value = "프로필 조회")
+    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "프로필 조회 성공"),
+            @ApiResponse(code = 401, message = "잘못된 토큰 ", response = ExceptionDto.class),
+            @ApiResponse(code = 500, message = "내부 서버 오류")
+    })
+    @Auth
+    @GetMapping("/profile")
+    public ResponseEntity<ProfileResDto> getProfile(HttpServletRequest httpServletRequest) {
+        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getProfile(user));
     }
 }

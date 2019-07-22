@@ -39,7 +39,7 @@ public class SuggestionController {
     @PostMapping("")
     public ResponseEntity<Void> postSuggestion(HttpServletRequest httpServletRequest,
                                                @RequestBody SuggestionReqDto suggestionReqDto) {
-        User user = (User) httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
         suggestionReqDto.setUserIdx(user.getIdx());
         suggestionService.saveSuggestion(suggestionReqDto);
         return ResponseEntity.ok().build();
