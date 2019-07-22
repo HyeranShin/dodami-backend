@@ -83,25 +83,4 @@ public class JwtService {
             return user_idx;
         }
     }
-
-    //반환될 토큰Res
-    public static class TokenRes {
-        //실제 토큰
-        private String token;
-
-        public TokenRes() {
-        }
-
-        public TokenRes(final String token) {
-            this.token = token;
-        }
-
-        public String getToken() {
-            return token;
-        }
-
-        public void setToken(String token) {
-            this.token = token;
-        }
-    }
 }

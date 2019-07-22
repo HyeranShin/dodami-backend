@@ -1,10 +1,7 @@
 package com.soma.dodam.dodami.security;
 
 import com.soma.dodam.dodami.dto.ExceptionDto;
-import com.soma.dodam.dodami.exception.AlreadyExistsException;
-import com.soma.dodam.dodami.exception.InvalidValueException;
-import com.soma.dodam.dodami.exception.NotMatchException;
-import com.soma.dodam.dodami.exception.UnAuthenticationException;
+import com.soma.dodam.dodami.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUploadBase;
 import org.springframework.http.HttpStatus;
@@ -36,9 +33,9 @@ public class SecurityControllerAdvice {
         return new ResponseEntity<>(ExceptionDto.toExceptionDto(exception.getField(), exception.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(AlreadyExistsException.class)
-    public ResponseEntity<ExceptionDto> alreadyExists(AlreadyExistsException exception) {
-        log.debug("AlreadyExistsException is happened!");
+    @ExceptionHandler(AlreadyExistException.class)
+    public ResponseEntity<ExceptionDto> alreadyExists(AlreadyExistException exception) {
+        log.debug("AlreadyExistException is happened!");
         return new ResponseEntity<>(ExceptionDto.toExceptionDto(exception.getField(), exception.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
@@ -61,6 +58,12 @@ public class SecurityControllerAdvice {
                         .field(FIELD)
                         .message(exception.getMessage())
                         .build());
+    }
+
+    @ExceptionHandler(NotExistException.class)
+    public ResponseEntity<ExceptionDto> notExistException(NotExistException exception) {
+        log.debug("[NotExistException] {}", exception.getMessage());
+        return new ResponseEntity<>(ExceptionDto.toExceptionDto(exception.getField(), exception.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

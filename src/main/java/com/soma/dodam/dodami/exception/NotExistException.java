@@ -3,11 +3,11 @@ package com.soma.dodam.dodami.exception;
 import lombok.Getter;
 
 @Getter
-public class AlreadyExistsException extends RuntimeException {
+public class NotExistException extends RuntimeException {
 
     private String field;
 
-    public AlreadyExistsException(String field, String message) {
+    public NotExistException(String field, String message) {
         super(message);
         this.field = field;
     }

@@ -1,9 +1,11 @@
 package com.soma.dodam.dodami.service;
 
 import com.soma.dodam.dodami.domain.User;
+import com.soma.dodam.dodami.dto.SignInReqDto;
 import com.soma.dodam.dodami.dto.SignUpReqDto;
-import com.soma.dodam.dodami.exception.AlreadyExistsException;
+import com.soma.dodam.dodami.exception.AlreadyExistException;
 import com.soma.dodam.dodami.exception.InvalidValueException;
+import com.soma.dodam.dodami.exception.NotExistException;
 import com.soma.dodam.dodami.exception.NotMatchException;
 import com.soma.dodam.dodami.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,14 @@ public class UserService {
     public User signUp(SignUpReqDto signUpReqDto) {
         checkValidity(signUpReqDto);
         return userRepository.save(signUpReqDto.toUser());
+    }
+
+    @Transactional
+    public User signIn(SignInReqDto signInReqDto) {
+        User user = userRepository.findById(signInReqDto.getId())
+                .orElseThrow(() -> new NotExistException("id", "존재하지 않는 아이디 입니다."));
+        user.matchPasswordBy(signInReqDto);
+        return user;
     }
 
     public void checkValidity(SignUpReqDto signUpReqDto) {
@@ -70,14 +80,14 @@ public class UserService {
 
     public Boolean isExistingId(String id) {
         if(userRepository.findById(id).isPresent()) {
-            throw new AlreadyExistsException("id", "이미 사용중인 아이디 입니다.");
+            throw new AlreadyExistException("id", "이미 사용중인 아이디 입니다.");
         }
         return Boolean.FALSE;
     }
 
     public Boolean isExistingPhone(String phone) {
         if(userRepository.findByPhone(phone).isPresent()) {
-            throw new AlreadyExistsException("phone", "이미 사용중인 휴대폰 번호 입니다.");
+            throw new AlreadyExistException("phone", "이미 사용중인 휴대폰 번호 입니다.");
         }
         return Boolean.FALSE;
     }

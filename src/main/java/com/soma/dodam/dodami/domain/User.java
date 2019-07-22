@@ -1,5 +1,7 @@
 package com.soma.dodam.dodami.domain;
 
+import com.soma.dodam.dodami.dto.SignInReqDto;
+import com.soma.dodam.dodami.exception.NotMatchException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,5 +39,12 @@ public class User extends BaseTimeEntity {
         this.password = password;
         this.name = name;
         this.phone = phone;
+    }
+
+    public boolean matchPasswordBy(SignInReqDto signInReqDto) {
+        if(!this.password.equals(signInReqDto.getPassword())) {
+            throw new NotMatchException("password", "비밀번호가 일치하지 않습니다.");
+        }
+        return true;
     }
 }
