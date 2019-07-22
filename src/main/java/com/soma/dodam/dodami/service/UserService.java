@@ -6,11 +6,9 @@ import com.soma.dodam.dodami.exception.AlreadyExistsException;
 import com.soma.dodam.dodami.exception.InvalidValueException;
 import com.soma.dodam.dodami.exception.NotMatchException;
 import com.soma.dodam.dodami.repository.UserRepository;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import javax.validation.constraints.AssertTrue;
 
 @Service
 public class UserService {
@@ -28,6 +26,11 @@ public class UserService {
 
     @Transactional
     public User signUp(SignUpReqDto signUpReqDto) {
+        checkValidity(signUpReqDto);
+        return userRepository.save(signUpReqDto.toUser());
+    }
+
+    public void checkValidity(SignUpReqDto signUpReqDto) {
         isValidId(signUpReqDto.getId());
         isExistingId(signUpReqDto.getId());
         isValidPassword(signUpReqDto.getPassword());
@@ -35,7 +38,6 @@ public class UserService {
         isValidName(signUpReqDto.getName());
         isValidPhone(signUpReqDto.getPhone());
         isExistingPhone(signUpReqDto.getPhone());
-        return userRepository.save(signUpReqDto.toUser());
     }
 
     public Boolean isValidId(String id) {

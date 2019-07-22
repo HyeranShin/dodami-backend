@@ -2,3 +2,7 @@ spring:
   h2:
     console:
       enabled: true
+
+JWT:
+  ISSUER: DODAMI
+  SECRET: sdjaf3i@#$%13469ktmrEOGJERAfier*&
