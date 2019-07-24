@@ -4,6 +4,7 @@ import com.soma.dodam.dodami.auth.Auth;
 import com.soma.dodam.dodami.auth.AuthAspect;
 import com.soma.dodam.dodami.domain.User;
 import com.soma.dodam.dodami.dto.ExceptionDto;
+import com.soma.dodam.dodami.dto.request.VoiceModelModReqDto;
 import com.soma.dodam.dodami.dto.request.VoiceModelReqDto;
 import com.soma.dodam.dodami.dto.response.VoiceModelResDto;
 import com.soma.dodam.dodami.service.VoiceModelService;
@@ -53,6 +54,40 @@ public class VoiceModelController {
     @GetMapping("")
     public ResponseEntity<List<VoiceModelResDto>> getVoiceModelList(HttpServletRequest httpServletRequest) {
         User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
-        return ResponseEntity.ok().body(voiceModelService.getVoiceModelList(user));
+        return ResponseEntity.ok().body(voiceModelService.getVoiceModelList(user.getIdx()));
+    }
+
+    @ApiOperation(value = "음성 모델 수정")
+    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "음성 모델 수정 성공"),
+            @ApiResponse(code = 400, message = "음성 모델 수정 실패", response = ExceptionDto.class),
+            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
+            @ApiResponse(code = 500, message = "내부 서버 에러")
+    })
+    @Auth
+    @PutMapping("")
+    public ResponseEntity<Void> modifyVoiceModel(HttpServletRequest httpServletRequest,
+                                                 @RequestBody VoiceModelModReqDto voiceModelModReqDto) {
+        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+        voiceModelService.modifyVoiceModel(user.getIdx(), voiceModelModReqDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @ApiOperation(value = "음성 모델 삭제")
+    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "음성 모델 삭제 성공"),
+            @ApiResponse(code = 400, message = "음성 모델 삭제 실패", response = ExceptionDto.class),
+            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
+            @ApiResponse(code = 500, message = "내부 서버 에러")
+    })
+    @Auth
+    @DeleteMapping("/{idx}")
+    public ResponseEntity<Void> deleteVoiceModel(HttpServletRequest httpServletRequest,
+                                                 @PathVariable Long idx) {
+        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+        voiceModelService.deleteVoiceModel(user.getIdx(), idx);
+        return ResponseEntity.ok().build();
     }
 }

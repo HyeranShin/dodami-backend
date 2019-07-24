@@ -38,4 +38,21 @@ public class ContentsController {
         contentsService.writeLetter(letterReqDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @ApiOperation(value = "편지 삭제")
+    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "편지 삭제 성공"),
+            @ApiResponse(code = 400, message = "편지 삭제 실패", response = ExceptionDto.class),
+            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
+            @ApiResponse(code = 500, message = "내부 서버 에러")
+    })
+    @Auth
+    @DeleteMapping("/letter/{idx}")
+    public ResponseEntity<Void> deleteVoiceModel(HttpServletRequest httpServletRequest,
+                                                 @PathVariable Long idx) {
+        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+        contentsService.deleteLetter(user.getIdx(), idx);
+        return ResponseEntity.ok().build();
+    }
 }

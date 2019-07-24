@@ -8,7 +8,11 @@ import java.util.Optional;
 
 public interface VoiceModelRepository extends JpaRepository<VoiceModel, Long> {
 
+    VoiceModel findByIdx(Long idx);
+
     List<VoiceModel> findByUserIdx(Long idx);
 
     Optional<VoiceModel> findByUserIdxAndName(Long idx, String name);
+
+    Optional<VoiceModel> findByUserIdxAndIdx(Long userIdx, Long idx);
 }

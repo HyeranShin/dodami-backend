@@ -56,7 +56,7 @@ public class AuthAspect {
         else {
             final User user = userRepository.findByIdx(token.getUser_idx());
             //유효 사용자 검사
-            if (user == null) throw new UnAuthenticationException("idx", "해당하는 유저가 존재하지 않습니다.");
+            if (user == null) throw new UnAuthenticationException("token", "해당하는 유저가 존재하지 않습니다.");
             return user;
         }
     }

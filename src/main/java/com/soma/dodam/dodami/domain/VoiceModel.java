@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -33,5 +32,10 @@ public class VoiceModel extends BaseTimeEntity {
     public VoiceModel(Long userIdx, String name) {
         this.userIdx = userIdx;
         this.name = name;
+    }
+
+    public VoiceModel updateName(String name) {
+        this.name = name;
+        return this;
     }
 }
