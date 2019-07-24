@@ -6,5 +6,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class ImageResDto {
-    String imageUrl;
+
+    private String imageUrl;
 }

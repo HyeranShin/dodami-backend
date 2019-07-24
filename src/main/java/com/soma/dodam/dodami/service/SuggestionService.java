@@ -4,16 +4,14 @@ import com.soma.dodam.dodami.domain.Suggestion;
 import com.soma.dodam.dodami.dto.SuggestionReqDto;
 import com.soma.dodam.dodami.exception.NotExistException;
 import com.soma.dodam.dodami.repository.SuggestionRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class SuggestionService {
 
-    SuggestionRepository suggestionRepository;
-
-    public SuggestionService(SuggestionRepository suggestionRepository) {
-        this.suggestionRepository = suggestionRepository;
-    }
+    private final SuggestionRepository suggestionRepository;
 
     public Suggestion saveSuggestion(SuggestionReqDto suggestionReqDto) {
         if(suggestionReqDto.getContent().equals("")) {

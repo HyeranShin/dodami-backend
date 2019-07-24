@@ -21,14 +21,14 @@ import javax.servlet.http.HttpServletRequest;
 @Api(description = "유저 REST API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 public class UserController {
 
     private final UserService userService;
     private final JwtService jwtService;
 
     @ApiOperation(value = "회원 가입", notes = "유효성 검사를 수행합니다. 하단의 Models를 참고하세요.\n성공 시 토큰을 헤더에 담아 반환합니다.")
-    @ApiResponses(value = {
+    @ApiResponses({
             @ApiResponse(code = 201, message = "회원 가입 성공"),
             @ApiResponse(code = 400, message = "유효성 검사 에러 or 이미 가입된 정보", response = ExceptionDto.class),
             @ApiResponse(code = 500, message = "내부 서버 오류")
@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "로그인", notes = "성공 시 토큰을 헤더에 담아 반환합니다.")
-    @ApiResponses(value = {
+    @ApiResponses({
             @ApiResponse(code = 200, message = "로그인 성공"),
             @ApiResponse(code = 400, message = "로그인 실패"),
             @ApiResponse(code = 500, message = "내부 서버 오류")
@@ -59,7 +59,7 @@ public class UserController {
 
     @ApiOperation(value = "프로필 조회")
     @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
-    @ApiResponses(value = {
+    @ApiResponses({
             @ApiResponse(code = 200, message = "프로필 조회 성공"),
             @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
             @ApiResponse(code = 500, message = "내부 서버 오류")

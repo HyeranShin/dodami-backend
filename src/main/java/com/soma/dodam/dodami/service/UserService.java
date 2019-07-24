@@ -9,23 +9,21 @@ import com.soma.dodam.dodami.exception.InvalidValueException;
 import com.soma.dodam.dodami.exception.NotExistException;
 import com.soma.dodam.dodami.exception.NotMatchException;
 import com.soma.dodam.dodami.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     private final static String ID_REGEX = "^[a-z]+[a-z0-9]{3,11}$";
     private final static String PASSWORD_REGEX = "^[a-zA-Z0-9]{8,20}$";
     private final static String NAME_REGEX = "^[가-힣]{2,}$";
     private final static String PHONE_REGEX = "^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$";
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Transactional
     public User signUp(SignUpReqDto signUpReqDto) {

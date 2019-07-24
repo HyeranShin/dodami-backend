@@ -26,7 +26,7 @@ public class ImageController {
 
     @ApiOperation(value = "이미지 등록", notes = "성공 시 S3에 저장된 이미지 url을 바디에 담아 반환합니다.")
     @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
-    @ApiResponses(value = {
+    @ApiResponses({
             @ApiResponse(code = 201, message = "이미지 저장 성공"),
             @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
             @ApiResponse(code = 500, message = "내부 서버 에러")
