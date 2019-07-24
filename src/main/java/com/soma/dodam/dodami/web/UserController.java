@@ -10,6 +10,7 @@ import com.soma.dodam.dodami.dto.SignUpReqDto;
 import com.soma.dodam.dodami.service.JwtService;
 import com.soma.dodam.dodami.service.UserService;
 import io.swagger.annotations.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +20,12 @@ import javax.servlet.http.HttpServletRequest;
 
 @Api(description = "유저 REST API")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
     private final JwtService jwtService;
-
-    public UserController(UserService userService, JwtService jwtService) {
-        this.userService = userService;
-        this.jwtService = jwtService;
-    }
 
     @ApiOperation(value = "회원 가입", notes = "유효성 검사를 수행합니다. 하단의 Models를 참고하세요.\n성공 시 토큰을 헤더에 담아 반환합니다.")
     @ApiResponses(value = {
@@ -64,7 +61,7 @@ public class UserController {
     @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "프로필 조회 성공"),
-            @ApiResponse(code = 401, message = "잘못된 토큰 ", response = ExceptionDto.class),
+            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
             @ApiResponse(code = 500, message = "내부 서버 오류")
     })
     @Auth

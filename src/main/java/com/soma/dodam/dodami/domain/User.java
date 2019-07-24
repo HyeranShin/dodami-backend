@@ -1,7 +1,5 @@
 package com.soma.dodam.dodami.domain;
 
-import com.soma.dodam.dodami.dto.SignInReqDto;
-import com.soma.dodam.dodami.exception.NotMatchException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
