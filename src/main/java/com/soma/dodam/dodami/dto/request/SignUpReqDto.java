@@ -3,6 +3,7 @@ package com.soma.dodam.dodami.dto.request;
 import com.soma.dodam.dodami.domain.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 public class SignUpReqDto {
@@ -22,10 +23,10 @@ public class SignUpReqDto {
     @ApiModelProperty(notes = "^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$", example = "010-1234-1234", position = 5)
     private String phone;
 
-    public User toUser() {
+    public User toUser(PasswordEncoder passwordEncoder) {
         return User.builder()
                 .id(id)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .name(name)
                 .phone(phone)
                 .build();

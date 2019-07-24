@@ -10,15 +10,19 @@ import com.soma.dodam.dodami.exception.NotExistException;
 import com.soma.dodam.dodami.exception.NotMatchException;
 import com.soma.dodam.dodami.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.transaction.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     private final static String ID_REGEX = "^[a-z]+[a-z0-9]{3,11}$";
     private final static String PASSWORD_REGEX = "^[a-zA-Z0-9]{8,20}$";
@@ -28,14 +32,14 @@ public class UserService {
     @Transactional
     public User signUp(SignUpReqDto signUpReqDto) {
         checkValidity(signUpReqDto);
-        return userRepository.save(signUpReqDto.toUser());
+        return userRepository.save(signUpReqDto.toUser(passwordEncoder));
     }
 
     @Transactional
     public User signIn(SignInReqDto signInReqDto) {
         User user = userRepository.findById(signInReqDto.getId())
                 .orElseThrow(() -> new NotExistException("id", "존재하지 않는 아이디 입니다."));
-        matchPassword(user.getPassword(), signInReqDto);
+        matchPassword(user.getPassword(), signInReqDto.getPassword());
         return user;
     }
 
@@ -106,8 +110,8 @@ public class UserService {
         return Boolean.TRUE;
     }
 
-    public boolean matchPassword(String password, SignInReqDto signInReqDto) {
-        if(!password.equals(signInReqDto.getPassword())) {
+    public boolean matchPassword(String password, String signInPassword) {
+        if(!passwordEncoder.matches(signInPassword, password)) {
             throw new NotMatchException("password", "비밀번호가 일치하지 않습니다.");
         }
         return Boolean.TRUE;
