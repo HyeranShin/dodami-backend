@@ -1,9 +1,9 @@
 package com.soma.dodam.dodami.service;
 
 import com.soma.dodam.dodami.domain.User;
-import com.soma.dodam.dodami.dto.ProfileResDto;
-import com.soma.dodam.dodami.dto.SignInReqDto;
-import com.soma.dodam.dodami.dto.SignUpReqDto;
+import com.soma.dodam.dodami.dto.response.ProfileResDto;
+import com.soma.dodam.dodami.dto.request.SignInReqDto;
+import com.soma.dodam.dodami.dto.request.SignUpReqDto;
 import com.soma.dodam.dodami.exception.AlreadyExistException;
 import com.soma.dodam.dodami.exception.InvalidValueException;
 import com.soma.dodam.dodami.exception.NotExistException;

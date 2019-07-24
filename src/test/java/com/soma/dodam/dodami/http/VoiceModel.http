@@ -1,0 +1,14 @@
+###
+POST http://localhost:8080/api/voice-model
+Content-Type: application/json
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIke0pXVC5JU1NVRVIiLCJ1c2VyX2lkeCI6MX0.8hjiKaoR016zU1u9z7JygRpcoMufVtj6UCs3uEarYl4
+
+{
+  "name": "아빠"
+}
+
+###
+GET http://localhost:8080/api/voice-model
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIke0pXVC5JU1NVRVIiLCJ1c2VyX2lkeCI6MX0.8hjiKaoR016zU1u9z7JygRpcoMufVtj6UCs3uEarYl4
+
+###

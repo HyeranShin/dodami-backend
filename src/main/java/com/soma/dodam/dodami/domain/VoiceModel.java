@@ -5,27 +5,33 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
 @Entity
-public class Suggestion extends BaseTimeEntity {
+@Getter
+public class VoiceModel extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
-    private Long Idx;
+    private Long idx;
 
     @Column
     private Long userIdx;
 
     @Column
-    private String content;
+    private String name;
+
+//    @Column
+//    private String filePath;
 
     @Builder
-    public Suggestion(Long userIdx, String content) {
+    public VoiceModel(Long userIdx, String name) {
         this.userIdx = userIdx;
-        this.content = content;
+        this.name = name;
     }
 }

@@ -11,12 +11,16 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:8080/api/users/login
+POST http://localhost:8080/api/user/login
 Content-Type: application/json
 
 {
   "id": "dodami",
   "password": "dodami123"
 }
+
+###
+GET http://localhost:8080/api/user/profile
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIke0pXVC5JU1NVRVIiLCJ1c2VyX2lkeCI6MX0.8hjiKaoR016zU1u9z7JygRpcoMufVtj6UCs3uEarYl4
 
 ###

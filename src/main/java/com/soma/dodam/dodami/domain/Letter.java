@@ -21,15 +21,12 @@ public class Letter extends BaseTimeEntity {
     Long idx;
 
     @Column
-    @NotNull
     Long userIdx;
 
     @Column
-    @NotNull
     String title;
 
     @Column
-    @NotNull
     String content;
 
     @Builder

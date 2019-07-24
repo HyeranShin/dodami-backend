@@ -4,7 +4,7 @@ import com.soma.dodam.dodami.auth.Auth;
 import com.soma.dodam.dodami.auth.AuthAspect;
 import com.soma.dodam.dodami.domain.User;
 import com.soma.dodam.dodami.dto.ExceptionDto;
-import com.soma.dodam.dodami.dto.LetterReqDto;
+import com.soma.dodam.dodami.dto.request.LetterReqDto;
 import com.soma.dodam.dodami.service.ContentsService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;

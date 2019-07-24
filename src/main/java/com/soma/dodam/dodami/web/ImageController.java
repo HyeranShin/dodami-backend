@@ -2,7 +2,7 @@ package com.soma.dodam.dodami.web;
 
 import com.soma.dodam.dodami.auth.Auth;
 import com.soma.dodam.dodami.dto.ExceptionDto;
-import com.soma.dodam.dodami.dto.ImageResDto;
+import com.soma.dodam.dodami.dto.response.ImageResDto;
 import com.soma.dodam.dodami.service.S3FileUploadService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;

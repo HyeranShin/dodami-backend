@@ -1,4 +1,4 @@
-package com.soma.dodam.dodami.dto;
+package com.soma.dodam.dodami.dto.request;
 
 import com.soma.dodam.dodami.domain.Suggestion;
 import io.swagger.annotations.ApiModelProperty;

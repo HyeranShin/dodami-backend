@@ -1,4 +1,4 @@
-package com.soma.dodam.dodami.dto;
+package com.soma.dodam.dodami.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

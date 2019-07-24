@@ -1,4 +1,4 @@
-package com.soma.dodam.dodami.dto;
+package com.soma.dodam.dodami.dto.request;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

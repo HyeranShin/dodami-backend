@@ -1,7 +1,7 @@
 package com.soma.dodam.dodami.service;
 
 import com.soma.dodam.dodami.domain.Suggestion;
-import com.soma.dodam.dodami.dto.SuggestionReqDto;
+import com.soma.dodam.dodami.dto.request.SuggestionReqDto;
 import com.soma.dodam.dodami.exception.NotExistException;
 import com.soma.dodam.dodami.repository.SuggestionRepository;
 import lombok.RequiredArgsConstructor;

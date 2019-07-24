@@ -21,19 +21,15 @@ public class User extends BaseTimeEntity {
     private Long idx;
 
     @Column
-    @NotNull
     private String id;
 
     @Column
-    @NotNull
     private String password;
 
     @Column
-    @NotNull
     private String name;
 
     @Column
-    @NotNull
     private String phone;
 
     @Builder
