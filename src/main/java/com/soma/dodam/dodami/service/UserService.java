@@ -32,7 +32,7 @@ public class UserService {
     @Transactional
     public User signUp(SignUpReqDto signUpReqDto) {
         checkValidity(signUpReqDto);
-        return userRepository.save(signUpReqDto.toUser(passwordEncoder));
+        return userRepository.save(signUpReqDto.toUser(passwordEncoder.encode(signUpReqDto.getPassword())));
     }
 
     @Transactional
@@ -49,6 +49,13 @@ public class UserService {
                 .name(user.getName())
                 .password(user.getPassword())
                 .phone(user.getPhone()).build();
+    }
+
+    @Transactional
+    public void withdraw(Long idx) {
+        userRepository.findById(idx)
+                .orElseThrow(() -> new NotExistException("idx", "존재하지 않는 유저 입니다."));
+        userRepository.deleteById(idx);
     }
 
     public void checkValidity(SignUpReqDto signUpReqDto) {
@@ -110,8 +117,8 @@ public class UserService {
         return Boolean.TRUE;
     }
 
-    public boolean matchPassword(String password, String signInPassword) {
-        if(!passwordEncoder.matches(signInPassword, password)) {
+    public boolean matchPassword(String EncodedPassword, String signInPassword) {
+        if(!passwordEncoder.matches(signInPassword, EncodedPassword)) {
             throw new NotMatchException("password", "비밀번호가 일치하지 않습니다.");
         }
         return Boolean.TRUE;

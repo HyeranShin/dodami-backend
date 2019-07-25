@@ -70,4 +70,20 @@ public class UserController {
         User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
         return ResponseEntity.status(HttpStatus.OK).body(userService.getProfile(user));
     }
+
+    @ApiOperation(value = "회원 탈퇴")
+    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "회원 탈퇴 성공"),
+            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
+            @ApiResponse(code = 500, message = "내부 서버 오류")
+    })
+    @Auth
+    @DeleteMapping("")
+    public ResponseEntity<Void> withdraw(HttpServletRequest httpServletRequest) {
+        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+        userService.withdraw(user.getIdx());
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 }

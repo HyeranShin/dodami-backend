@@ -49,7 +49,7 @@ public class ContentsController {
     })
     @Auth
     @DeleteMapping("/letter/{idx}")
-    public ResponseEntity<Void> deleteVoiceModel(HttpServletRequest httpServletRequest,
+    public ResponseEntity<Void> deleteLetter(HttpServletRequest httpServletRequest,
                                                  @PathVariable Long idx) {
         User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
         contentsService.deleteLetter(user.getIdx(), idx);
