@@ -4,6 +4,7 @@ import com.soma.dodam.dodami.auth.Auth;
 import com.soma.dodam.dodami.auth.AuthAspect;
 import com.soma.dodam.dodami.domain.User;
 import com.soma.dodam.dodami.dto.ExceptionDto;
+import com.soma.dodam.dodami.dto.request.ModUserInfoReqDto;
 import com.soma.dodam.dodami.dto.response.ProfileResDto;
 import com.soma.dodam.dodami.dto.request.SignInReqDto;
 import com.soma.dodam.dodami.dto.request.SignUpReqDto;
@@ -30,7 +31,7 @@ public class UserController {
     @ApiOperation(value = "회원 가입", notes = "유효성 검사를 수행합니다. 하단의 Models를 참고하세요.\n성공 시 토큰을 헤더에 담아 반환합니다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "회원 가입 성공"),
-            @ApiResponse(code = 400, message = "유효성 검사 에러 or 이미 가입된 정보", response = ExceptionDto.class),
+            @ApiResponse(code = 400, message = "잘못된 요쳥(유효성 검사 에러 / 이미 가입된 정보)", response = ExceptionDto.class),
             @ApiResponse(code = 500, message = "내부 서버 오류")
     })
     @PostMapping("")
@@ -45,7 +46,7 @@ public class UserController {
     @ApiOperation(value = "로그인", notes = "성공 시 토큰을 헤더에 담아 반환합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "로그인 성공"),
-            @ApiResponse(code = 400, message = "로그인 실패"),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = ExceptionDto.class),
             @ApiResponse(code = 500, message = "내부 서버 오류")
     })
     @PostMapping("/login")
@@ -83,6 +84,23 @@ public class UserController {
     public ResponseEntity<Void> withdraw(HttpServletRequest httpServletRequest) {
         User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
         userService.withdraw(user.getIdx());
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @ApiOperation(value = "회원 정보 수정", notes = "유효성 검사를 수행합니다. 하단의 Models를 참고하세요.")
+    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "회원 정보 수정 성공"),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = ExceptionDto.class),
+            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
+            @ApiResponse(code = 500, message = "내부 서버 오류")
+    })
+    @Auth
+    @PutMapping("")
+    public ResponseEntity<Void> modifyUserInfo(HttpServletRequest httpServletRequest,
+                                               @RequestBody ModUserInfoReqDto modUserInfoReqDto) {
+        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+        userService.modifyUserInfo(user.getIdx(), modUserInfoReqDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

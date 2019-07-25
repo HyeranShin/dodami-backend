@@ -1,6 +1,7 @@
 package com.soma.dodam.dodami.service;
 
 import com.soma.dodam.dodami.domain.User;
+import com.soma.dodam.dodami.dto.request.ModUserInfoReqDto;
 import com.soma.dodam.dodami.dto.response.ProfileResDto;
 import com.soma.dodam.dodami.dto.request.SignInReqDto;
 import com.soma.dodam.dodami.dto.request.SignUpReqDto;
@@ -24,10 +25,17 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private final static String ID_REGEX = "^[a-z]+[a-z0-9]{3,11}$";
-    private final static String PASSWORD_REGEX = "^[a-zA-Z0-9]{8,20}$";
-    private final static String NAME_REGEX = "^[가-힣]{2,}$";
-    private final static String PHONE_REGEX = "^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$";
+    private final static String ID_REGEX;
+    private final static String PASSWORD_REGEX;
+    private final static String NAME_REGEX;
+    private final static String PHONE_REGEX;
+
+    static {
+        ID_REGEX = "^[a-z]+[a-z0-9]{3,11}$";
+        PASSWORD_REGEX = "^[a-zA-Z0-9]{8,20}$";
+        NAME_REGEX = "^[가-힣]{2,}$";
+        PHONE_REGEX = "^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$";
+    }
 
     @Transactional
     public User signUp(SignUpReqDto signUpReqDto) {
@@ -39,7 +47,9 @@ public class UserService {
     public User signIn(SignInReqDto signInReqDto) {
         User user = userRepository.findById(signInReqDto.getId())
                 .orElseThrow(() -> new NotExistException("id", "존재하지 않는 아이디 입니다."));
-        matchPassword(user.getPassword(), signInReqDto.getPassword());
+        if(!matchPassword(user.getPassword(), signInReqDto.getPassword())) {
+            throw new NotMatchException("password", "비밀번호가 일치하지 않습니다.");
+        }
         return user;
     }
 
@@ -53,12 +63,33 @@ public class UserService {
 
     @Transactional
     public void withdraw(Long idx) {
-        userRepository.findById(idx)
-                .orElseThrow(() -> new NotExistException("idx", "존재하지 않는 유저 입니다."));
         userRepository.deleteById(idx);
     }
 
-    public void checkValidity(SignUpReqDto signUpReqDto) {
+    @Transactional
+    public void modifyUserInfo(Long idx, ModUserInfoReqDto modUserInfoReqDto) {
+        User user = userRepository.findById(idx)
+                .orElseThrow(() -> new NotExistException("idx", "존재하지 않는 유저입니다."));
+        if(!checkEmptyOrNull(modUserInfoReqDto.getPhone()) && !checkEmptyOrNull(modUserInfoReqDto.getPassword())) {
+            throw new InvalidValueException("phone, password", "변경할 값이 없습니다.");
+        }
+        if(checkEmptyOrNull(modUserInfoReqDto.getPhone())) {
+            if(user.getPhone().equals(modUserInfoReqDto.getPhone())) {
+                throw new InvalidValueException("phone", "기존의 휴대폰 번호와 일치합니다.");
+            }
+            isValidPhone(modUserInfoReqDto.getPhone());
+            userRepository.save(user.updatePhone(modUserInfoReqDto.getPhone()));
+        }
+        if(checkEmptyOrNull(modUserInfoReqDto.getPassword())) {
+            if(matchPassword(user.getPassword(), modUserInfoReqDto.getPassword())) {
+                throw new InvalidValueException("password", "기존의 비밀번호와 일치합니다.");
+            }
+            isValidPassword(modUserInfoReqDto.getPassword());
+            userRepository.save(user.updatePassword(passwordEncoder.encode(modUserInfoReqDto.getPassword())));
+        }
+    }
+
+    private void checkValidity(SignUpReqDto signUpReqDto) {
         isValidId(signUpReqDto.getId());
         isExistingId(signUpReqDto.getId());
         isValidPassword(signUpReqDto.getPassword());
@@ -68,59 +99,63 @@ public class UserService {
         isExistingPhone(signUpReqDto.getPhone());
     }
 
-    public Boolean isValidId(String id) {
+    private Boolean isValidId(String id) {
         if(!id.matches(ID_REGEX)) {
             throw new InvalidValueException("id", "아이디는 영문 소문자로 시작하는 4~12자의 영문 소문자 또는 숫자로 이루어져야 합니다.");
         }
         return Boolean.TRUE;
     }
 
-    public Boolean isValidPassword(String password) {
+    private Boolean isValidPassword(String password) {
         if(!password.matches(PASSWORD_REGEX)) {
             throw new InvalidValueException("password", "비밀번호는 8~20자의 영문 대소문자 또는 숫자로 이루어져야 합니다.");
         }
         return Boolean.TRUE;
     }
 
-    public Boolean isValidName(String name) {
+    private Boolean isValidName(String name) {
         if(!name.matches(NAME_REGEX)) {
             throw new InvalidValueException("name", "이름은 2글자 이상의 한글로 이루어져야 합니다.");
         }
         return Boolean.TRUE;
     }
 
-    public Boolean isValidPhone(String phone) {
+    private Boolean isValidPhone(String phone) {
         if(!phone.matches(PHONE_REGEX)) {
             throw new InvalidValueException("phone", "휴대폰 번호의 형식이 잘못되었습니다.");
         }
         return Boolean.TRUE;
     }
 
-    public Boolean isExistingId(String id) {
+    private Boolean isExistingId(String id) {
         if(userRepository.findById(id).isPresent()) {
             throw new AlreadyExistException("id", "이미 사용중인 아이디 입니다.");
         }
         return Boolean.TRUE;
     }
 
-    public Boolean isExistingPhone(String phone) {
+    private Boolean isExistingPhone(String phone) {
         if(userRepository.findByPhone(phone).isPresent()) {
             throw new AlreadyExistException("phone", "이미 사용중인 휴대폰 번호 입니다.");
         }
         return Boolean.TRUE;
     }
 
-    public Boolean isEqualConfigPassword(String password, String configPassword) {
+    private Boolean isEqualConfigPassword(String password, String configPassword) {
         if(!password.equals(configPassword)) {
             throw new NotMatchException("password", "비밀번호와 비밀번호 확인이 일치하지 않습니다.");
         }
         return Boolean.TRUE;
     }
 
-    public boolean matchPassword(String EncodedPassword, String signInPassword) {
-        if(!passwordEncoder.matches(signInPassword, EncodedPassword)) {
-            throw new NotMatchException("password", "비밀번호가 일치하지 않습니다.");
+    private boolean matchPassword(String EncodedPassword, String signInPassword) {
+        return passwordEncoder.matches(signInPassword, EncodedPassword);
+    }
+
+    private boolean checkEmptyOrNull(String value) {
+        if(value == null) {
+            return false;
         }
-        return Boolean.TRUE;
+        return !value.isEmpty();
     }
 }

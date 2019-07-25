@@ -4,10 +4,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 
 @Getter
-public class VoiceModelModReqDto {
+public class ModVoiceModelReqDto {
 
+    @ApiModelProperty(position = 1)
     private Long idx;
 
-    @ApiModelProperty(example = "아빠")
+    @ApiModelProperty(example = "아빠", position = 2)
     private String name;
 }
