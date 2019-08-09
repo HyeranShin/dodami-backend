@@ -25,13 +25,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private final static String ID_REGEX;
+    private final static String EMAIL_REGEX;
     private final static String PASSWORD_REGEX;
     private final static String NAME_REGEX;
     private final static String PHONE_REGEX;
 
     static {
-        ID_REGEX = "^[a-z]+[a-z0-9]{3,11}$";
+        EMAIL_REGEX = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
         PASSWORD_REGEX = "^[a-zA-Z0-9]{8,20}$";
         NAME_REGEX = "^[가-힣]{2,}$";
         PHONE_REGEX = "^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$";
@@ -39,53 +39,76 @@ public class UserService {
 
     @Transactional
     public User signUp(SignUpReqDto signUpReqDto) {
+        checkRequired(signUpReqDto);
         checkValidity(signUpReqDto);
         return userRepository.save(signUpReqDto.toUser(passwordEncoder.encode(signUpReqDto.getPassword())));
     }
 
     @Transactional
     public User signIn(SignInReqDto signInReqDto) {
+        checkRequired(signInReqDto);
         User user = userRepository.findById(signInReqDto.getId())
-                .orElseThrow(() -> new NotExistException("id", "존재하지 않는 아이디 입니다."));
+                .orElseThrow(() -> new NotExistException("id", "존재하지 않는 이메일 입니다."));
         if(!matchPassword(user.getPassword(), signInReqDto.getPassword())) {
             throw new NotMatchException("password", "비밀번호가 일치하지 않습니다.");
         }
         return user;
     }
 
-    public ProfileResDto getProfile(User user) {
-        return ProfileResDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .password(user.getPassword())
-                .phone(user.getPhone()).build();
+//    public ProfileResDto getProfile(User user) {
+//        return ProfileResDto.builder()
+//                .id(user.getId())
+//                .name(user.getName())
+//                .password(user.getPassword())
+//                .phone(user.getPhone()).build();
+//    }
+
+//    @Transactional
+//    public void withdraw(Long idx) {
+//        userRepository.deleteById(idx);
+//    }
+
+//    @Transactional
+//    public void modifyUserInfo(Long idx, ModUserInfoReqDto modUserInfoReqDto) {
+//        User user = userRepository.findById(idx)
+//                .orElseThrow(() -> new NotExistException("idx", "존재하지 않는 유저입니다."));
+//        if(!checkEmptyOrNull(modUserInfoReqDto.getPhone()) && !checkEmptyOrNull(modUserInfoReqDto.getPassword())) {
+//            throw new InvalidValueException("phone, password", "변경할 값이 없습니다.");
+//        }
+//        if(checkEmptyOrNull(modUserInfoReqDto.getPhone())) {
+//            if(user.getPhone().equals(modUserInfoReqDto.getPhone())) {
+//                throw new InvalidValueException("phone", "기존의 휴대폰 번호와 일치합니다.");
+//            }
+//            isValidPhone(modUserInfoReqDto.getPhone());
+//            userRepository.save(user.updatePhone(modUserInfoReqDto.getPhone()));
+//        }
+//        if(checkEmptyOrNull(modUserInfoReqDto.getPassword())) {
+//            if(matchPassword(user.getPassword(), modUserInfoReqDto.getPassword())) {
+//                throw new InvalidValueException("password", "기존의 비밀번호와 일치합니다.");
+//            }
+//            isValidPassword(modUserInfoReqDto.getPassword());
+//            userRepository.save(user.updatePassword(passwordEncoder.encode(modUserInfoReqDto.getPassword())));
+//        }
+//    }
+
+    private void checkRequired(SignUpReqDto signUpReqDto) {
+        if(signUpReqDto.getId() == null) {
+            throw new NotExistException("email", "이메일을 입력해주세요.");
+        }
+        if(signUpReqDto.getName() == null) {
+            throw new NotExistException("name", "성함을 입력해주세요.");
+        }
+        if(signUpReqDto.getPassword() == null) {
+            throw new NotExistException("password", "비밀번호를 입력해주세요.");
+        }
     }
 
-    @Transactional
-    public void withdraw(Long idx) {
-        userRepository.deleteById(idx);
-    }
-
-    @Transactional
-    public void modifyUserInfo(Long idx, ModUserInfoReqDto modUserInfoReqDto) {
-        User user = userRepository.findById(idx)
-                .orElseThrow(() -> new NotExistException("idx", "존재하지 않는 유저입니다."));
-        if(!checkEmptyOrNull(modUserInfoReqDto.getPhone()) && !checkEmptyOrNull(modUserInfoReqDto.getPassword())) {
-            throw new InvalidValueException("phone, password", "변경할 값이 없습니다.");
+    private void checkRequired(SignInReqDto signInReqDto) {
+        if(signInReqDto.getId() == null) {
+            throw new NotExistException("email", "이메일을 입력해주세요.");
         }
-        if(checkEmptyOrNull(modUserInfoReqDto.getPhone())) {
-            if(user.getPhone().equals(modUserInfoReqDto.getPhone())) {
-                throw new InvalidValueException("phone", "기존의 휴대폰 번호와 일치합니다.");
-            }
-            isValidPhone(modUserInfoReqDto.getPhone());
-            userRepository.save(user.updatePhone(modUserInfoReqDto.getPhone()));
-        }
-        if(checkEmptyOrNull(modUserInfoReqDto.getPassword())) {
-            if(matchPassword(user.getPassword(), modUserInfoReqDto.getPassword())) {
-                throw new InvalidValueException("password", "기존의 비밀번호와 일치합니다.");
-            }
-            isValidPassword(modUserInfoReqDto.getPassword());
-            userRepository.save(user.updatePassword(passwordEncoder.encode(modUserInfoReqDto.getPassword())));
+        if(signInReqDto.getPassword() == null) {
+            throw new NotExistException("password", "비밀번호를 입력해주세요.");
         }
     }
 
@@ -93,15 +116,17 @@ public class UserService {
         isValidId(signUpReqDto.getId());
         isExistingId(signUpReqDto.getId());
         isValidPassword(signUpReqDto.getPassword());
-        isEqualConfigPassword(signUpReqDto.getPassword(), signUpReqDto.getConfigPassword());
+//        isEqualConfigPassword(signUpReqDto.getPassword(), signUpReqDto.getConfigPassword());
         isValidName(signUpReqDto.getName());
-        isValidPhone(signUpReqDto.getPhone());
-        isExistingPhone(signUpReqDto.getPhone());
+        if(signUpReqDto.getPhone() != null) {
+            isValidPhone(signUpReqDto.getPhone());
+            isExistingPhone(signUpReqDto.getPhone());
+        }
     }
 
     private Boolean isValidId(String id) {
-        if(!id.matches(ID_REGEX)) {
-            throw new InvalidValueException("id", "아이디는 영문 소문자로 시작하는 4~12자의 영문 소문자 또는 숫자로 이루어져야 합니다.");
+        if(!id.matches(EMAIL_REGEX)) {
+            throw new InvalidValueException("email", "이메일의 형식이 잘못되었습니.");
         }
         return Boolean.TRUE;
     }
@@ -129,7 +154,7 @@ public class UserService {
 
     private Boolean isExistingId(String id) {
         if(userRepository.findById(id).isPresent()) {
-            throw new AlreadyExistException("id", "이미 사용중인 아이디 입니다.");
+            throw new AlreadyExistException("id", "이미 사용중인 이메일 입니다.");
         }
         return Boolean.TRUE;
     }
@@ -141,21 +166,21 @@ public class UserService {
         return Boolean.TRUE;
     }
 
-    private Boolean isEqualConfigPassword(String password, String configPassword) {
-        if(!password.equals(configPassword)) {
-            throw new NotMatchException("password", "비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-        }
-        return Boolean.TRUE;
-    }
+//    private Boolean isEqualConfigPassword(String password, String configPassword) {
+//        if(!password.equals(configPassword)) {
+//            throw new NotMatchException("password", "비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+//        }
+//        return Boolean.TRUE;
+//    }
 
     private boolean matchPassword(String EncodedPassword, String signInPassword) {
         return passwordEncoder.matches(signInPassword, EncodedPassword);
     }
 
-    private boolean checkEmptyOrNull(String value) {
-        if(value == null) {
-            return false;
-        }
-        return !value.isEmpty();
-    }
+//    private boolean checkEmptyOrNull(String value) {
+//        if(value == null) {
+//            return false;
+//        }
+//        return !value.isEmpty();
+//    }
 }

@@ -28,7 +28,7 @@ public class UserController {
     private final UserService userService;
     private final JwtService jwtService;
 
-    @ApiOperation(value = "회원 가입", notes = "유효성 검사를 수행합니다. 하단의 Models를 참고하세요.\n성공 시 토큰을 헤더에 담아 반환합니다.")
+    @ApiOperation(value = "회원 가입", notes = "유효성 검사를 수행합니다. 하단 Models의 SignUpReqDto를 참고하세요.\n성공 시 토큰을 헤더에 담아 반환합니다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "회원 가입 성공"),
             @ApiResponse(code = 400, message = "잘못된 요쳥(유효성 검사 에러 / 이미 가입된 정보)", response = ExceptionDto.class),
@@ -58,50 +58,50 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).build();
     }
 
-    @ApiOperation(value = "프로필 조회")
-    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "프로필 조회 성공"),
-            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
-            @ApiResponse(code = 500, message = "내부 서버 오류")
-    })
-    @Auth
-    @GetMapping("/profile")
-    public ResponseEntity<ProfileResDto> getProfile(HttpServletRequest httpServletRequest) {
-        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getProfile(user));
-    }
-
-    @ApiOperation(value = "회원 탈퇴")
-    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "회원 탈퇴 성공"),
-            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
-            @ApiResponse(code = 500, message = "내부 서버 오류")
-    })
-    @Auth
-    @DeleteMapping("")
-    public ResponseEntity<Void> withdraw(HttpServletRequest httpServletRequest) {
-        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
-        userService.withdraw(user.getIdx());
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
-    @ApiOperation(value = "회원 정보 수정", notes = "유효성 검사를 수행합니다. 하단의 Models를 참고하세요.")
-    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "회원 정보 수정 성공"),
-            @ApiResponse(code = 400, message = "잘못된 요청", response = ExceptionDto.class),
-            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
-            @ApiResponse(code = 500, message = "내부 서버 오류")
-    })
-    @Auth
-    @PutMapping("")
-    public ResponseEntity<Void> modifyUserInfo(HttpServletRequest httpServletRequest,
-                                               @RequestBody ModUserInfoReqDto modUserInfoReqDto) {
-        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
-        userService.modifyUserInfo(user.getIdx(), modUserInfoReqDto);
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
+//    @ApiOperation(value = "프로필 조회")
+//    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "프로필 조회 성공"),
+//            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
+//            @ApiResponse(code = 500, message = "내부 서버 오류")
+//    })
+//    @Auth
+//    @GetMapping("/profile")
+//    public ResponseEntity<ProfileResDto> getProfile(HttpServletRequest httpServletRequest) {
+//        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+//        return ResponseEntity.status(HttpStatus.OK).body(userService.getProfile(user));
+//    }
+//
+//    @ApiOperation(value = "회원 탈퇴")
+//    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "회원 탈퇴 성공"),
+//            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
+//            @ApiResponse(code = 500, message = "내부 서버 오류")
+//    })
+//    @Auth
+//    @DeleteMapping("")
+//    public ResponseEntity<Void> withdraw(HttpServletRequest httpServletRequest) {
+//        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+//        userService.withdraw(user.getIdx());
+//        return ResponseEntity.status(HttpStatus.OK).build();
+//    }
+//
+//    @ApiOperation(value = "회원 정보 수정", notes = "유효성 검사를 수행합니다. 하단의 Models를 참고하세요.")
+//    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "회원 정보 수정 성공"),
+//            @ApiResponse(code = 400, message = "잘못된 요청", response = ExceptionDto.class),
+//            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
+//            @ApiResponse(code = 500, message = "내부 서버 오류")
+//    })
+//    @Auth
+//    @PutMapping("")
+//    public ResponseEntity<Void> modifyUserInfo(HttpServletRequest httpServletRequest,
+//                                               @RequestBody ModUserInfoReqDto modUserInfoReqDto) {
+//        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+//        userService.modifyUserInfo(user.getIdx(), modUserInfoReqDto);
+//        return ResponseEntity.status(HttpStatus.OK).build();
+//    }
 
 }
