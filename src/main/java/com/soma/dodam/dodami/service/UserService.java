@@ -55,19 +55,26 @@ public class UserService {
         return user;
     }
 
+    @Transactional
+    public void modifyProfileUrl(Long idx, String profileUrl) {
+        User user = userRepository.findById(idx)
+                .orElseThrow(() -> new NotExistException("idx", "존재하지 않는 유저입니다."));
+        userRepository.save(user.updateProfileUrl(profileUrl));
+    }
+
 //    public ProfileResDto getProfile(User user) {
 //        return ProfileResDto.builder()
 //                .id(user.getId())
 //                .name(user.getName())
 //                .password(user.getPassword())
 //                .phone(user.getPhone()).build();
-//    }
 
+//    }
 //    @Transactional
 //    public void withdraw(Long idx) {
 //        userRepository.deleteById(idx);
-//    }
 
+//    }
 //    @Transactional
 //    public void modifyUserInfo(Long idx, ModUserInfoReqDto modUserInfoReqDto) {
 //        User user = userRepository.findById(idx)
@@ -89,6 +96,7 @@ public class UserService {
 //            isValidPassword(modUserInfoReqDto.getPassword());
 //            userRepository.save(user.updatePassword(passwordEncoder.encode(modUserInfoReqDto.getPassword())));
 //        }
+
 //    }
 
     private void checkRequired(SignUpReqDto signUpReqDto) {
@@ -165,12 +173,12 @@ public class UserService {
         }
         return Boolean.TRUE;
     }
-
 //    private Boolean isEqualConfigPassword(String password, String configPassword) {
 //        if(!password.equals(configPassword)) {
 //            throw new NotMatchException("password", "비밀번호와 비밀번호 확인이 일치하지 않습니다.");
 //        }
 //        return Boolean.TRUE;
+
 //    }
 
     private boolean matchPassword(String EncodedPassword, String signInPassword) {

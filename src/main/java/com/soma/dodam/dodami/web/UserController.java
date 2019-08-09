@@ -5,6 +5,7 @@ import com.soma.dodam.dodami.auth.AuthAspect;
 import com.soma.dodam.dodami.domain.User;
 import com.soma.dodam.dodami.dto.ExceptionDto;
 import com.soma.dodam.dodami.dto.request.ModUserInfoReqDto;
+import com.soma.dodam.dodami.dto.request.ProfileUrlReqDto;
 import com.soma.dodam.dodami.dto.response.ProfileResDto;
 import com.soma.dodam.dodami.dto.request.SignInReqDto;
 import com.soma.dodam.dodami.dto.request.SignUpReqDto;
@@ -56,6 +57,23 @@ public class UserController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("token", token);
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).build();
+    }
+
+    @ApiOperation(value = "프로필 이미지 수정")
+    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "프로필 이미지 수정 성공"),
+            @ApiResponse(code = 400, message = "잘못된 요청", response = ExceptionDto.class),
+            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
+            @ApiResponse(code = 500, message = "내부 서버 오류")
+    })
+    @Auth
+    @PutMapping("")
+    public ResponseEntity<Void> modifyProfileUrl(HttpServletRequest httpServletRequest,
+                                               @RequestBody ProfileUrlReqDto profileUrlReqDto) {
+        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+        userService.modifyProfileUrl(user.getIdx(), profileUrlReqDto.getProfileUrl());
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 //    @ApiOperation(value = "프로필 조회")

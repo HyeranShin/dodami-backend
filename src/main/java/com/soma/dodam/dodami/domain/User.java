@@ -47,6 +47,11 @@ public class User extends BaseTimeEntity {
         this.profileUrl = profileUrl;
     }
 
+    public User updateProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
+        return this;
+    }
+
 //    public User updatePassword(String password) {
 //        this.password = password;
 //        return this;
