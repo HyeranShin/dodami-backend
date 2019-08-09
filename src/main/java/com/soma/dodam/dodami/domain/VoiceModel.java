@@ -28,14 +28,22 @@ public class VoiceModel extends BaseTimeEntity {
 //    @Column
 //    private String filePath;
 
+    @Column
+    private String imgUrl;
+
+    @Column
+    private Integer progress;
+
     @Builder
-    public VoiceModel(Long userIdx, String name) {
+    public VoiceModel(Long userIdx, String name, String imgUrl, Integer progress) {
         this.userIdx = userIdx;
         this.name = name;
+        this.imgUrl = imgUrl;
+        this.progress = progress;
     }
 
-    public VoiceModel updateName(String name) {
-        this.name = name;
+    public VoiceModel updateProgress(Integer progress) {
+        this.progress = progress;
         return this;
     }
 }

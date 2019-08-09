@@ -21,6 +21,12 @@ import java.util.List;
 public class SecurityControllerAdvice {
     public static final String FIELD = "content-type";
 
+    @ExceptionHandler(NoResultException.class)
+    public ResponseEntity<ExceptionDto> noResult(NoResultException exception) {
+        log.debug("NoResultException is happened!");
+        return new ResponseEntity<>(ExceptionDto.toExceptionDto(exception.getField(), exception.getMessage()), HttpStatus.NO_CONTENT);
+    }
+
     @ExceptionHandler(NotMatchException.class)
     public ResponseEntity<ExceptionDto> notMatch(NotMatchException exception) {
         log.debug("NotMatchException is happened!");

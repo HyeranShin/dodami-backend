@@ -9,16 +9,21 @@ import lombok.Setter;
 @Getter
 public class VoiceModelReqDto {
 
-    @ApiModelProperty(readOnly = true)
+    @ApiModelProperty(readOnly = true, position = 1)
     private Long userIdx;
 
-    @ApiModelProperty(example = "아빠")
+    @ApiModelProperty(required = true, notes = "이름 또는 애칭", example = "아빠", position = 2)
     private String name;
+
+    @ApiModelProperty(notes = "이미지 url", position = 3)
+    private String imgUrl;
 
     public VoiceModel toVoiceModel() {
         return VoiceModel.builder()
                 .userIdx(userIdx)
                 .name(name)
+                .imgUrl(imgUrl)
+                .progress(0)
                 .build();
     }
 }

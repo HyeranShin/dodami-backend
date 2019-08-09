@@ -4,6 +4,7 @@ import com.soma.dodam.dodami.auth.Auth;
 import com.soma.dodam.dodami.auth.AuthAspect;
 import com.soma.dodam.dodami.domain.User;
 import com.soma.dodam.dodami.dto.ExceptionDto;
+import com.soma.dodam.dodami.dto.request.LearningProgressReqDto;
 import com.soma.dodam.dodami.dto.request.ModVoiceModelReqDto;
 import com.soma.dodam.dodami.dto.request.VoiceModelReqDto;
 import com.soma.dodam.dodami.dto.response.VoiceModelResDto;
@@ -43,10 +44,31 @@ public class VoiceModelController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @ApiOperation(value = "학습 진행 상황 변경")
+    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "학습 진행 상황 변경 성공"),
+            @ApiResponse(code = 400, message = "학습 진행 상황 변경 실패", response = ExceptionDto.class),
+            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
+            @ApiResponse(code = 500, message = "내부 서버 에러")
+    })
+    @Auth
+    @PutMapping("/progress/{idx}")
+    public ResponseEntity<Void> updateLearningProgress(HttpServletRequest httpServletRequest,
+                                                       @PathVariable Long idx,
+                                                       @RequestBody LearningProgressReqDto learningProgressReqDto) {
+        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+        learningProgressReqDto.setUserIdx(user.getIdx());
+        learningProgressReqDto.setIdx(idx);
+        voiceModelService.updateLearningProgress(learningProgressReqDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     @ApiOperation(value = "음성 모델 조회")
     @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     @ApiResponses({
             @ApiResponse(code = 200, message = "음성 모델 조회 성공"),
+            @ApiResponse(code = 204, message = "음성 모델 조회 결과 없음", response = ExceptionDto.class),
             @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
             @ApiResponse(code = 500, message = "내부 서버 에러")
     })
@@ -57,23 +79,23 @@ public class VoiceModelController {
         return ResponseEntity.ok().body(voiceModelService.getVoiceModelList(user.getIdx()));
     }
 
-    @ApiOperation(value = "음성 모델 이름 수정")
-    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "음성 모델 이름 수정 성공"),
-            @ApiResponse(code = 400, message = "음성 모델 이름 수정 실패", response = ExceptionDto.class),
-            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
-            @ApiResponse(code = 500, message = "내부 서버 에러")
-    })
-    @Auth
-    @PutMapping("")
-    public ResponseEntity<Void> modifyVoiceModel(HttpServletRequest httpServletRequest,
-                                                 @RequestBody ModVoiceModelReqDto modVoiceModelReqDto) {
-        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
-        voiceModelService.modifyVoiceModel(user.getIdx(), modVoiceModelReqDto);
-        return ResponseEntity.ok().build();
-    }
-
+//    @ApiOperation(value = "음성 모델 이름 수정")
+//    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "음성 모델 이름 수정 성공"),
+//            @ApiResponse(code = 400, message = "음성 모델 이름 수정 실패", response = ExceptionDto.class),
+//            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
+//            @ApiResponse(code = 500, message = "내부 서버 에러")
+//    })
+//    @Auth
+//    @PutMapping("")
+//    public ResponseEntity<Void> modifyVoiceModel(HttpServletRequest httpServletRequest,
+//                                                 @RequestBody ModVoiceModelReqDto modVoiceModelReqDto) {
+//        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+//        voiceModelService.modifyVoiceModel(user.getIdx(), modVoiceModelReqDto);
+//        return ResponseEntity.ok().build();
+//    }
+//
     @ApiOperation(value = "음성 모델 삭제")
     @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     @ApiResponses({

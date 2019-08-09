@@ -1,12 +1,14 @@
 package com.soma.dodam.dodami.service;
 
 import com.soma.dodam.dodami.domain.VoiceModel;
+import com.soma.dodam.dodami.dto.request.LearningProgressReqDto;
 import com.soma.dodam.dodami.dto.request.ModVoiceModelReqDto;
 import com.soma.dodam.dodami.dto.request.VoiceModelReqDto;
 import com.soma.dodam.dodami.dto.response.VoiceModelResDto;
 import com.soma.dodam.dodami.exception.*;
 import com.soma.dodam.dodami.repository.VoiceModelRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,24 +30,49 @@ public class VoiceModelService {
     }
 
     public List<VoiceModelResDto> getVoiceModelList(Long userIdx) {
-        return voiceModelRepository.findByUserIdx(userIdx)
+
+        List<VoiceModelResDto> foundVoiceModelList = voiceModelRepository.findByUserIdx(userIdx)
                 .stream()
                 .map(voiceModel -> new VoiceModelResDto(voiceModel))
                 .collect(Collectors.toList());
+
+        if(foundVoiceModelList.size() == 0) {
+            throw new NoResultException("userIdx", "음성 모델 조회 결과가 없습니다.");
+        }
+
+        return foundVoiceModelList;
     }
 
-    public void modifyVoiceModel(Long userIdx, ModVoiceModelReqDto modVoiceModelReqDto) {
-        isExistingVoiceModel(modVoiceModelReqDto.getIdx());
-        isNotEmptyVoiceModelName(modVoiceModelReqDto.getName());
+    public void updateLearningProgress(LearningProgressReqDto learningProgressReqDto) {
+        if(learningProgressReqDto.getProgress() == null) {
+            throw new NotExistException("progress", "학습 진행 상황을 입력해주세요.");
+        }
 
-        if(voiceModelRepository.findByUserIdxAndIdx(userIdx, modVoiceModelReqDto.getIdx()).isPresent()) {
-            voiceModelRepository.save(voiceModelRepository.findByIdx(modVoiceModelReqDto.getIdx()).updateName(modVoiceModelReqDto.getName()));
+//        if(learningProgressReqDto.getProgress())
+
+        isExistingVoiceModel(learningProgressReqDto.getIdx());
+
+        if(voiceModelRepository.findByUserIdxAndIdx(learningProgressReqDto.getUserIdx(), learningProgressReqDto.getIdx()).isPresent()) {
+            voiceModelRepository.save(voiceModelRepository.findByIdx(learningProgressReqDto.getIdx()).updateProgress(learningProgressReqDto.getProgress()));
         }
         else {
             throw new NotMatchException("idx", "다른 유저의 음성 모델 idx 입니다.");
         }
+
     }
 
+//    public void modifyVoiceModel(Long userIdx, ModVoiceModelReqDto modVoiceModelReqDto) {
+//        isExistingVoiceModel(modVoiceModelReqDto.getIdx());
+//        isNotEmptyVoiceModelName(modVoiceModelReqDto.getName());
+//
+//        if(voiceModelRepository.findByUserIdxAndIdx(userIdx, modVoiceModelReqDto.getIdx()).isPresent()) {
+//            voiceModelRepository.save(voiceModelRepository.findByIdx(modVoiceModelReqDto.getIdx()).updateName(modVoiceModelReqDto.getName()));
+//        }
+//        else {
+//            throw new NotMatchException("idx", "다른 유저의 음성 모델 idx 입니다.");
+//        }
+//    }
+//
     public void deleteVoiceModel(Long userIdx, Long idx) {
         isExistingVoiceModel(idx);
 
@@ -64,10 +91,7 @@ public class VoiceModelService {
     }
 
     private void isNotEmptyVoiceModelName(String name) {
-        if (name == null) {
-            throw new InvalidValueException("name", "음성 모델의 이름은 공백이 될 수 없습니다.");
-        }
-        if(name.equals("")) {
+        if (name == null || name.equals("")) {
             throw new InvalidValueException("name", "음성 모델의 이름은 공백이 될 수 없습니다.");
         }
     }
