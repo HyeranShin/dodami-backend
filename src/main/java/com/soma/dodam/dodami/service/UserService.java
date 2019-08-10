@@ -58,7 +58,7 @@ public class UserService {
     @Transactional
     public void modifyProfileUrl(Long idx, String profileUrl) {
         User user = userRepository.findById(idx)
-                .orElseThrow(() -> new NotExistException("idx", "존재하지 않는 유저입니다."));
+                .orElseThrow(() -> new NotExistException("token", "존재하지 않는 유저입니다."));
         userRepository.save(user.updateProfileUrl(profileUrl));
     }
 

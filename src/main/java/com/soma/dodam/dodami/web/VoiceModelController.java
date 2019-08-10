@@ -68,7 +68,7 @@ public class VoiceModelController {
     @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     @ApiResponses({
             @ApiResponse(code = 200, message = "음성 모델 조회 성공"),
-            @ApiResponse(code = 204, message = "음성 모델 조회 결과 없음", response = ExceptionDto.class),
+            @ApiResponse(code = 204, message = "음성 모델 조회 결과 없음"),
             @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
             @ApiResponse(code = 500, message = "내부 서버 에러")
     })

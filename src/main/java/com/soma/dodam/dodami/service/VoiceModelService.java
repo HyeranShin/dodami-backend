@@ -48,7 +48,9 @@ public class VoiceModelService {
             throw new NotExistException("progress", "학습 진행 상황을 입력해주세요.");
         }
 
-//        if(learningProgressReqDto.getProgress())
+        if(learningProgressReqDto.getProgress() < 0 || learningProgressReqDto.getProgress() > 100) {
+            throw new InvalidValueException("progress", "1~100 사이의 숫자가 아닙니다.");
+        }
 
         isExistingVoiceModel(learningProgressReqDto.getIdx());
 
