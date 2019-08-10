@@ -35,4 +35,10 @@ public class SubscriptionService {
                 .orElseThrow(() -> new NotExistException("token", "존재하지 않는 유저입니다."));
         userRepository.save(user.updateSubscription(subscriptionIdx));
     }
+
+    public SubscriptionResDto getSpecificSubscriptionInfo(Integer idx) {
+        Subscription subscription = subscriptionRepository.findById(idx)
+                .orElseThrow(() -> new NotExistException("idx", "존재하지 않는 구독권 번호입니다."));
+        return new SubscriptionResDto(subscription);
+    }
 }

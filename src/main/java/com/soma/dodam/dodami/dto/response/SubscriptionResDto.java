@@ -16,7 +16,7 @@ public class SubscriptionResDto {
     @ApiModelProperty(notes = "설명", example = "모델 5명 등록", position = 3)
     private String description;
 
-    @ApiModelProperty(notes = "가격", example = "30000", position = 4)
+    @ApiModelProperty(notes = "가격", example = "3000", position = 4)
     private Integer price;
 
     public SubscriptionResDto(Subscription subscription) {

@@ -1,5 +1,6 @@
 package com.soma.dodam.dodami.service;
 
+import com.soma.dodam.dodami.domain.Subscription;
 import com.soma.dodam.dodami.domain.User;
 import com.soma.dodam.dodami.dto.request.ModUserInfoReqDto;
 import com.soma.dodam.dodami.dto.response.ProfileResDto;
@@ -9,13 +10,16 @@ import com.soma.dodam.dodami.exception.AlreadyExistException;
 import com.soma.dodam.dodami.exception.InvalidValueException;
 import com.soma.dodam.dodami.exception.NotExistException;
 import com.soma.dodam.dodami.exception.NotMatchException;
+import com.soma.dodam.dodami.repository.SubscriptionRepository;
 import com.soma.dodam.dodami.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -23,6 +27,7 @@ import javax.transaction.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final SubscriptionRepository subscriptionRepository;
     private final PasswordEncoder passwordEncoder;
 
     private final static String EMAIL_REGEX;
@@ -62,14 +67,13 @@ public class UserService {
         userRepository.save(user.updateProfileUrl(profileUrl));
     }
 
-//    public ProfileResDto getProfile(User user) {
-//        return ProfileResDto.builder()
-//                .id(user.getId())
-//                .name(user.getName())
-//                .password(user.getPassword())
-//                .phone(user.getPhone()).build();
-
-//    }
+    public ProfileResDto getProfile(User user) {
+        return ProfileResDto.builder()
+                .name(user.getName())
+                .profileUrl(user.getProfileUrl())
+                .subscriptionIdx(user.getSubscriptionIdx())
+                .build();
+    }
 //    @Transactional
 //    public void withdraw(Long idx) {
 //        userRepository.deleteById(idx);
@@ -134,7 +138,7 @@ public class UserService {
 
     private Boolean isValidId(String id) {
         if(!id.matches(EMAIL_REGEX)) {
-            throw new InvalidValueException("email", "이메일의 형식이 잘못되었습니.");
+            throw new InvalidValueException("email", "이메일의 형식이 잘못되었습니다.");
         }
         return Boolean.TRUE;
     }

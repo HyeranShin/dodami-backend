@@ -4,11 +4,10 @@ import com.soma.dodam.dodami.auth.Auth;
 import com.soma.dodam.dodami.auth.AuthAspect;
 import com.soma.dodam.dodami.domain.User;
 import com.soma.dodam.dodami.dto.ExceptionDto;
-import com.soma.dodam.dodami.dto.request.ModUserInfoReqDto;
 import com.soma.dodam.dodami.dto.request.ProfileUrlReqDto;
-import com.soma.dodam.dodami.dto.response.ProfileResDto;
 import com.soma.dodam.dodami.dto.request.SignInReqDto;
 import com.soma.dodam.dodami.dto.request.SignUpReqDto;
+import com.soma.dodam.dodami.dto.response.ProfileResDto;
 import com.soma.dodam.dodami.service.JwtService;
 import com.soma.dodam.dodami.service.UserService;
 import io.swagger.annotations.*;
@@ -76,19 +75,19 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-//    @ApiOperation(value = "프로필 조회")
-//    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "프로필 조회 성공"),
-//            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
-//            @ApiResponse(code = 500, message = "내부 서버 오류")
-//    })
-//    @Auth
-//    @GetMapping("/profile")
-//    public ResponseEntity<ProfileResDto> getProfile(HttpServletRequest httpServletRequest) {
-//        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
-//        return ResponseEntity.status(HttpStatus.OK).body(userService.getProfile(user));
-//    }
+    @ApiOperation(value = "프로필 조회")
+    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "프로필 조회 성공"),
+            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
+            @ApiResponse(code = 500, message = "내부 서버 오류")
+    })
+    @Auth
+    @GetMapping("/profile")
+    public ResponseEntity<ProfileResDto> getProfile(HttpServletRequest httpServletRequest) {
+        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getProfile(user));
+    }
 //
 //    @ApiOperation(value = "회원 탈퇴")
 //    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")

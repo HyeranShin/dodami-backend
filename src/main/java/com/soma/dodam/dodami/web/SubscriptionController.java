@@ -33,6 +33,16 @@ public class SubscriptionController {
         return ResponseEntity.ok().body(subscriptionService.getSubscriptionInfo());
     }
 
+    @ApiOperation(value = "특정 구독권 정보 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "구독권 정보 조회 성공"),
+            @ApiResponse(code = 500, message = "내부 서버 에러")
+    })
+    @GetMapping("/{idx}")
+    public ResponseEntity<SubscriptionResDto> getSpecificSubscriptionInfo(@PathVariable Integer idx) {
+        return ResponseEntity.ok().body(subscriptionService.getSpecificSubscriptionInfo(idx));
+    }
+
     @ApiOperation(value = "구독권 구매")
     @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     @ApiResponses({

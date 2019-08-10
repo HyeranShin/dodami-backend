@@ -3,7 +3,7 @@ POST http://localhost:8080/api/user
 Content-Type: application/json
 
 {
-  "id": "dodami",
+  "id": "dodami@naver.com",
   "password": "dodami123",
   "configPassword": "dodami123",
   "name": "도담이",
@@ -15,26 +15,13 @@ POST http://localhost:8080/api/user/login
 Content-Type: application/json
 
 {
-  "id": "dodami",
+  "id": "dodami@naver.com",
   "password": "dodami123"
 }
 
 ###
 GET http://localhost:8080/api/user/profile
-Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIke0pXVC5JU1NVRVIiLCJ1c2VyX2lkeCI6MX0.8hjiKaoR016zU1u9z7JygRpcoMufVtj6UCs3uEarYl4
-
-###
-DELETE http://localhost:8080/api/user
-Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIke0pXVC5JU1NVRVIiLCJ1c2VyX2lkeCI6MX0.8hjiKaoR016zU1u9z7JygRpcoMufVtj6UCs3uEarYl4
-
-###
-PUT http://localhost:8080/api/user
 Content-Type: application/json
 Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIke0pXVC5JU1NVRVIiLCJ1c2VyX2lkeCI6MX0.8hjiKaoR016zU1u9z7JygRpcoMufVtj6UCs3uEarYl4
-
-{
-  "phone": "010-1234-5678",
-  "password": "dodami1233"
-}
 
 ###

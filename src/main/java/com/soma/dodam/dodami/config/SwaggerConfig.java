@@ -28,8 +28,8 @@ public class SwaggerConfig {
     @SuppressWarnings("deprecation")
     private ApiInfo apiInfo() {
         ApiInfo apiInfo = new ApiInfo(
-                "Dodami",
-                "Software Maestro 도담팀 프로젝트\n- 아빠의 목소리로 태아와의 유대감을 형성하는 태교 애플리케이션",
+                "도담이(Dodami)",
+                "Software Maestro 10기 도담팀 프로젝트\n- 아빠의 목소리로 태아와의 유대감을 형성하는 태교 애플리케이션",
                 "1.0",
                 "Terms of Service URL",
                 "신혜란",
