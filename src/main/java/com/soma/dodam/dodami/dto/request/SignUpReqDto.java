@@ -36,6 +36,7 @@ public class SignUpReqDto {
                 .babyName(babyName)
                 .phone(phone)
                 .profileUrl(profileUrl)
+                .subscriptionIdx(0)
                 .build();
     }
 }

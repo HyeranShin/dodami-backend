@@ -37,18 +37,27 @@ public class User extends BaseTimeEntity {
     @Column
     private String profileUrl;
 
+    @Column
+    private Integer subscriptionIdx;
+
     @Builder
-    public User(String name, String id, String password, String babyName, String phone, String profileUrl) {
+    public User(String name, String id, String password, String babyName, String phone, String profileUrl, Integer subscriptionIdx) {
         this.name = name;
         this.id = id;
         this.password = password;
         this.babyName = babyName;
         this.phone = phone;
         this.profileUrl = profileUrl;
+        this.subscriptionIdx = subscriptionIdx;
     }
 
     public User updateProfileUrl(String profileUrl) {
         this.profileUrl = profileUrl;
+        return this;
+    }
+
+    public User updateSubscription(Integer subscriptionIdx) {
+        this.subscriptionIdx = subscriptionIdx;
         return this;
     }
 
