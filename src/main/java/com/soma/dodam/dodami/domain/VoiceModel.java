@@ -42,6 +42,16 @@ public class VoiceModel extends BaseTimeEntity {
         this.progress = progress;
     }
 
+    public VoiceModel updateName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public VoiceModel updateImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+        return this;
+    }
+
     public VoiceModel updateProgress(Integer progress) {
         this.progress = progress;
         return this;

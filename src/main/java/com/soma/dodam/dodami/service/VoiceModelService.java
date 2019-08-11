@@ -2,13 +2,13 @@ package com.soma.dodam.dodami.service;
 
 import com.soma.dodam.dodami.domain.VoiceModel;
 import com.soma.dodam.dodami.dto.request.LearningProgressReqDto;
-import com.soma.dodam.dodami.dto.request.ModVoiceModelReqDto;
+import com.soma.dodam.dodami.dto.request.ModVoiceModelImgReqDto;
+import com.soma.dodam.dodami.dto.request.ModVoiceModelNameReqDto;
 import com.soma.dodam.dodami.dto.request.VoiceModelReqDto;
 import com.soma.dodam.dodami.dto.response.VoiceModelResDto;
 import com.soma.dodam.dodami.exception.*;
 import com.soma.dodam.dodami.repository.VoiceModelRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -63,18 +63,33 @@ public class VoiceModelService {
 
     }
 
-//    public void modifyVoiceModel(Long userIdx, ModVoiceModelReqDto modVoiceModelReqDto) {
-//        isExistingVoiceModel(modVoiceModelReqDto.getIdx());
-//        isNotEmptyVoiceModelName(modVoiceModelReqDto.getName());
-//
-//        if(voiceModelRepository.findByUserIdxAndIdx(userIdx, modVoiceModelReqDto.getIdx()).isPresent()) {
-//            voiceModelRepository.save(voiceModelRepository.findByIdx(modVoiceModelReqDto.getIdx()).updateName(modVoiceModelReqDto.getName()));
-//        }
-//        else {
-//            throw new NotMatchException("idx", "다른 유저의 음성 모델 idx 입니다.");
-//        }
-//    }
-//
+    public void modifyVoiceModelName(Long userIdx, ModVoiceModelNameReqDto modVoiceModelNameReqDto) {
+        isExistingVoiceModel(modVoiceModelNameReqDto.getIdx());
+        isNotEmptyVoiceModelName(modVoiceModelNameReqDto.getName());
+
+        if(voiceModelRepository.findByUserIdxAndName(userIdx, modVoiceModelNameReqDto.getName()).isPresent()) {
+            throw new AlreadyExistException("name", "음성 모델 이름이 중복됩니다.");
+        }
+
+        if(voiceModelRepository.findByUserIdxAndIdx(userIdx, modVoiceModelNameReqDto.getIdx()).isPresent()) {
+            voiceModelRepository.save(voiceModelRepository.findByIdx(modVoiceModelNameReqDto.getIdx()).updateName(modVoiceModelNameReqDto.getName()));
+        }
+        else {
+            throw new NotMatchException("idx", "다른 유저의 음성 모델 idx 입니다.");
+        }
+    }
+
+    public void modifyVoiceModelImg(Long userIdx, ModVoiceModelImgReqDto modVoiceModelImgReqDto) {
+        isExistingVoiceModel(modVoiceModelImgReqDto.getIdx());
+
+        if(voiceModelRepository.findByUserIdxAndIdx(userIdx, modVoiceModelImgReqDto.getIdx()).isPresent()) {
+            voiceModelRepository.save(voiceModelRepository.findByIdx(modVoiceModelImgReqDto.getIdx()).updateImgUrl(modVoiceModelImgReqDto.getImgUrl()));
+        }
+        else {
+            throw new NotMatchException("idx", "다른 유저의 음성 모델 idx 입니다.");
+        }
+    }
+
     public void deleteVoiceModel(Long userIdx, Long idx) {
         isExistingVoiceModel(idx);
 
