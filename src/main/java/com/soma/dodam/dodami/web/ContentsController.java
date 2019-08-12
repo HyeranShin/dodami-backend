@@ -1,13 +1,9 @@
 package com.soma.dodam.dodami.web;
 
-import com.soma.dodam.dodami.auth.Auth;
-import com.soma.dodam.dodami.auth.AuthAspect;
-import com.soma.dodam.dodami.domain.User;
 import com.soma.dodam.dodami.dto.ExceptionDto;
 import com.soma.dodam.dodami.dto.response.ContentsResDto;
 import com.soma.dodam.dodami.service.ContentsService;
 import io.swagger.annotations.*;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

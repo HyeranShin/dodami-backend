@@ -1,6 +1,5 @@
 package com.soma.dodam.dodami.service;
 
-import com.soma.dodam.dodami.domain.Letter;
 import com.soma.dodam.dodami.dto.request.LetterReqDto;
 import com.soma.dodam.dodami.dto.response.LetterResDto;
 import com.soma.dodam.dodami.exception.NoResultException;

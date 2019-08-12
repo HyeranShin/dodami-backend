@@ -19,7 +19,7 @@ import java.util.List;
 @Api(description = "플레이중인 스토리 REST API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/playing")
+@RequestMapping("/api/playing")
 public class PlayingStoryController {
 
     private final PlayingStoryService playingStoryService;

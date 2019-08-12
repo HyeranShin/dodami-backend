@@ -1,8 +1,6 @@
 package com.soma.dodam.dodami.service;
 
-import com.soma.dodam.dodami.domain.Subscription;
 import com.soma.dodam.dodami.domain.User;
-import com.soma.dodam.dodami.dto.request.ModUserInfoReqDto;
 import com.soma.dodam.dodami.dto.response.ProfileResDto;
 import com.soma.dodam.dodami.dto.request.SignInReqDto;
 import com.soma.dodam.dodami.dto.request.SignUpReqDto;
@@ -14,12 +12,10 @@ import com.soma.dodam.dodami.repository.SubscriptionRepository;
 import com.soma.dodam.dodami.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Slf4j
 @Service

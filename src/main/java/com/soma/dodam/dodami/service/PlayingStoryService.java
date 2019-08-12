@@ -2,7 +2,6 @@ package com.soma.dodam.dodami.service;
 
 import com.soma.dodam.dodami.domain.Contents;
 import com.soma.dodam.dodami.domain.PlayingStory;
-import com.soma.dodam.dodami.domain.User;
 import com.soma.dodam.dodami.dto.request.PlayedTimeReqDto;
 import com.soma.dodam.dodami.dto.response.PlayingStoryResDto;
 import com.soma.dodam.dodami.exception.InvalidValueException;
