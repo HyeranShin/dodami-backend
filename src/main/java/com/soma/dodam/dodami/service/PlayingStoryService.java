@@ -4,12 +4,17 @@ import com.soma.dodam.dodami.domain.Contents;
 import com.soma.dodam.dodami.domain.PlayingStory;
 import com.soma.dodam.dodami.domain.User;
 import com.soma.dodam.dodami.dto.request.PlayedTimeReqDto;
+import com.soma.dodam.dodami.dto.response.PlayingStoryResDto;
 import com.soma.dodam.dodami.exception.InvalidValueException;
+import com.soma.dodam.dodami.exception.NoResultException;
 import com.soma.dodam.dodami.exception.NotExistException;
 import com.soma.dodam.dodami.repository.ContentsRepository;
 import com.soma.dodam.dodami.repository.PlayingStoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -42,5 +47,18 @@ public class PlayingStoryService {
         else {
             return;
         }
+    }
+
+    public List<PlayingStoryResDto> getPlayingList(Long idx) {
+        List<PlayingStoryResDto> playingList = playingStoryRepository.findAllByUserIdx(idx)
+                .stream()
+                .map(playing -> new PlayingStoryResDto(playing))
+                .collect(Collectors.toList());
+
+        if(playingList.size() == 0) {
+            new NoResultException("userIdx", "플레이중인 스토리가 없습니다.");
+        }
+
+        return playingList;
     }
 }

@@ -25,7 +25,7 @@ public class ContentsService {
     private final ContentsImgRepository contentsImgRepository;
 
     public List<ContentsResDto> getContentsList(Integer categoryIdx) {
-        List<ContentsResDto> contentsList = contentsRepository.findByCategoryIdx(categoryIdx)
+        List<ContentsResDto> contentsList = contentsRepository.findAllByCategoryIdx(categoryIdx)
                 .stream()
                 .map(contents -> new ContentsResDto(contents, contentsImgRepository.findAllByContentsIdx(contents.getIdx())))
                 .collect(Collectors.toList());
@@ -54,6 +54,11 @@ public class ContentsService {
                 .stream()
                 .map(contents -> new ContentsResDto(contents, null))
                 .collect(Collectors.toList());
+
+        if(newContentsList.size() == 0) {
+            new NoResultException("", "컨텐츠 데이터가 없습니다.");
+        }
+
         return newContentsList;
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ContentsRepository extends JpaRepository<Contents, Long> {
 
-    List<Contents> findByCategoryIdx(Integer categoryIdx);
+    List<Contents> findAllByCategoryIdx(Integer categoryIdx);
 
     Page<Contents> findAll(Pageable request);
 }
