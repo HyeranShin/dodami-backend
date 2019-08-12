@@ -49,4 +49,16 @@ public class ContentsController {
     public ResponseEntity<ContentsResDto> getSpecificContents(@PathVariable Long contentsIdx) {
         return ResponseEntity.ok().body(contentsService.getSpecificContents(contentsIdx));
     }
+
+    @ApiOperation(value = "신규 컨텐츠 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "신규 컨텐츠 조회 성공"),
+            @ApiResponse(code = 204, message = "신규 컨텐츠 조회 결과 없음", response = Object.class),
+            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
+            @ApiResponse(code = 500, message = "내부 서버 에러")
+    })
+    @GetMapping("/new")
+    public ResponseEntity<List<ContentsResDto>> getNewContentsList() {
+        return ResponseEntity.ok().body(contentsService.getNewContentsList());
+    }
 }

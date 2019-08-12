@@ -8,6 +8,10 @@ import com.soma.dodam.dodami.exception.NotExistException;
 import com.soma.dodam.dodami.repository.ContentsImgRepository;
 import com.soma.dodam.dodami.repository.ContentsRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,5 +44,16 @@ public class ContentsService {
         List<ContentsImg> contentsImg = contentsImgRepository.findAllByContentsIdx(contentsIdx);
 
         return new ContentsResDto(contents, contentsImg);
+    }
+
+    public List<ContentsResDto> getNewContentsList() {
+        Pageable pageable = PageRequest.of(1, 10, new Sort(Sort.Direction.DESC, "createdDate"));
+        Page<Contents> contentsResDtoPage = contentsRepository.findAll(pageable);
+
+        List<ContentsResDto> newContentsList = contentsResDtoPage.getContent()
+                .stream()
+                .map(contents -> new ContentsResDto(contents, null))
+                .collect(Collectors.toList());
+        return newContentsList;
     }
 }
