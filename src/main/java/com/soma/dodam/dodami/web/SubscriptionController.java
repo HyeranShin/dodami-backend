@@ -23,7 +23,7 @@ public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
 
-    @ApiOperation(value = "구독권 정보 조회")
+    @ApiOperation(value = "전체 구독권 정보 조회")
     @ApiResponses({
             @ApiResponse(code = 200, message = "구독권 정보 조회 성공"),
             @ApiResponse(code = 500, message = "내부 서버 에러")
@@ -38,9 +38,9 @@ public class SubscriptionController {
             @ApiResponse(code = 200, message = "구독권 정보 조회 성공"),
             @ApiResponse(code = 500, message = "내부 서버 에러")
     })
-    @GetMapping("/{idx}")
-    public ResponseEntity<SubscriptionResDto> getSpecificSubscriptionInfo(@PathVariable Integer idx) {
-        return ResponseEntity.ok().body(subscriptionService.getSpecificSubscriptionInfo(idx));
+    @GetMapping("/{subscriptionIdx}")
+    public ResponseEntity<SubscriptionResDto> getSpecificSubscriptionInfo(@PathVariable Integer subscriptionIdx) {
+        return ResponseEntity.ok().body(subscriptionService.getSpecificSubscriptionInfo(subscriptionIdx));
     }
 
     @ApiOperation(value = "구독권 구매")
@@ -57,6 +57,22 @@ public class SubscriptionController {
                                                      @RequestBody SubscriptionReqDto subscriptionReqDto) {
         User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
         subscriptionService.purchaseSubscription(user.getIdx(), subscriptionReqDto.getIdx());
+        return ResponseEntity.ok().build();
+    }
+
+    @ApiOperation(value = "구독권 해지")
+    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "구독권 해지 성공"),
+            @ApiResponse(code = 400, message = "구독권 해지 실패", response = ExceptionDto.class),
+            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
+            @ApiResponse(code = 500, message = "내부 서버 에러")
+    })
+    @Auth
+    @DeleteMapping("")
+    public ResponseEntity<Void> cancelSubscription(HttpServletRequest httpServletRequest) {
+        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+        subscriptionService.cancelSubscription(user);
         return ResponseEntity.ok().build();
     }
 }
