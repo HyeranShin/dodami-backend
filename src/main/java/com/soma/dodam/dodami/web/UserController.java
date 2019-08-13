@@ -75,7 +75,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @ApiOperation(value = "프로필 조회")
+    @ApiOperation(value = "프로필 조회", notes = "프로필 사진이 있는 경우에만 profileUrl을 반환합니다.\n구독권이 있는 경우에만 subscriptionResDto를 반환합니다.")
     @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     @ApiResponses({
             @ApiResponse(code = 200, message = "프로필 조회 성공"),
@@ -88,21 +88,21 @@ public class UserController {
         User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
         return ResponseEntity.status(HttpStatus.OK).body(userService.getProfile(user));
     }
-//
-//    @ApiOperation(value = "회원 탈퇴")
-//    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "회원 탈퇴 성공"),
-//            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
-//            @ApiResponse(code = 500, message = "내부 서버 오류")
-//    })
-//    @Auth
-//    @DeleteMapping("")
-//    public ResponseEntity<Void> withdraw(HttpServletRequest httpServletRequest) {
-//        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
-//        userService.withdraw(user.getIdx());
-//        return ResponseEntity.status(HttpStatus.OK).build();
-//    }
+
+    @ApiOperation(value = "회원 탈퇴")
+    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "회원 탈퇴 성공"),
+            @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
+            @ApiResponse(code = 500, message = "내부 서버 오류")
+    })
+    @Auth
+    @DeleteMapping("")
+    public ResponseEntity<Void> withdraw(HttpServletRequest httpServletRequest) {
+        User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+        userService.withdraw(user.getIdx());
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 //
 //    @ApiOperation(value = "회원 정보 수정", notes = "유효성 검사를 수행합니다. 하단의 Models를 참고하세요.")
 //    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")

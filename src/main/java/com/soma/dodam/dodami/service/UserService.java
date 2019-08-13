@@ -4,6 +4,7 @@ import com.soma.dodam.dodami.domain.User;
 import com.soma.dodam.dodami.dto.response.ProfileResDto;
 import com.soma.dodam.dodami.dto.request.SignInReqDto;
 import com.soma.dodam.dodami.dto.request.SignUpReqDto;
+import com.soma.dodam.dodami.dto.response.SubscriptionResDto;
 import com.soma.dodam.dodami.exception.AlreadyExistException;
 import com.soma.dodam.dodami.exception.InvalidValueException;
 import com.soma.dodam.dodami.exception.NotExistException;
@@ -64,17 +65,22 @@ public class UserService {
     }
 
     public ProfileResDto getProfile(User user) {
+        SubscriptionResDto subscriptionResDto = null;
+        if(user.getSubscriptionIdx() != 0) {
+            subscriptionResDto = new SubscriptionResDto(subscriptionRepository.findByIdx(user.getSubscriptionIdx()));
+        }
         return ProfileResDto.builder()
                 .name(user.getName())
                 .profileUrl(user.getProfileUrl())
-                .subscriptionIdx(user.getSubscriptionIdx())
+                .subscriptionResDto(subscriptionResDto)
                 .build();
     }
-//    @Transactional
-//    public void withdraw(Long idx) {
-//        userRepository.deleteById(idx);
 
-//    }
+    @Transactional
+    public void withdraw(Long idx) {
+        userRepository.deleteById(idx);
+    }
+
 //    @Transactional
 //    public void modifyUserInfo(Long idx, ModUserInfoReqDto modUserInfoReqDto) {
 //        User user = userRepository.findById(idx)
