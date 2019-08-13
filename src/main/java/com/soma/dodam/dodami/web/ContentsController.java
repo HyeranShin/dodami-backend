@@ -21,7 +21,7 @@ public class ContentsController {
 
     private final ContentsService contentsService;
 
-    @ApiOperation(value = "컨텐츠 조회")
+    @ApiOperation(value = "컨텐츠 조회", notes = "컨텐츠 사진이 있는 경우에만 imgUrlResDto를 반환합니다.")
     @ApiImplicitParam(name = "categoryIdx", value = "(1: 동화, 2: 소설, 3: 뉴스)", dataType = "int", required = true)
     @ApiResponses({
             @ApiResponse(code = 200, message = "컨텐츠 조회 성공"),
@@ -34,7 +34,7 @@ public class ContentsController {
         return ResponseEntity.ok().body(contentsService.getContentsList(categoryIdx));
     }
 
-    @ApiOperation(value = "특정 컨텐츠 조회")
+    @ApiOperation(value = "특정 컨텐츠 조회", notes = "컨텐츠 사진이 있는 경우에만 imgUrlResDto를 반환합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "특정 컨텐츠 조회 성공"),
             @ApiResponse(code = 400, message = "특정 컨텐츠 조회 실패", response = ExceptionDto.class),
@@ -46,7 +46,7 @@ public class ContentsController {
         return ResponseEntity.ok().body(contentsService.getSpecificContents(contentsIdx));
     }
 
-    @ApiOperation(value = "신규 컨텐츠 조회")
+    @ApiOperation(value = "신규 컨텐츠 조회", notes = "컨텐츠 사진이 있는 경우에만 imgUrlResDto를 반환합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "신규 컨텐츠 조회 성공"),
             @ApiResponse(code = 204, message = "신규 컨텐츠 조회 결과 없음", response = Object.class),

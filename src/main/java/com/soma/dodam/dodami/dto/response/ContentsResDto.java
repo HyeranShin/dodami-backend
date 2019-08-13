@@ -1,5 +1,6 @@
 package com.soma.dodam.dodami.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.soma.dodam.dodami.domain.Contents;
 import com.soma.dodam.dodami.domain.ContentsImg;
 import io.swagger.annotations.ApiModelProperty;
@@ -27,6 +28,7 @@ public class ContentsResDto {
     private Long playTime;
 
     @ApiModelProperty(notes = "컨텐츠 이미지", position = 6)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<ContentsImgResDto> imgUrlResDto;
 
     public ContentsResDto(Contents contents, List<ContentsImg> contentsImgs) {

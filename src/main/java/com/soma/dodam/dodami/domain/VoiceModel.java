@@ -25,8 +25,8 @@ public class VoiceModel extends BaseTimeEntity {
     @Column
     private String name;
 
-//    @Column
-//    private String filePath;
+    @Column
+    private String filePath;
 
     @Column
     private String imgUrl;
