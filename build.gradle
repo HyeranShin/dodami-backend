@@ -41,6 +41,8 @@ dependencies {
     compile 'com.aspectj:aspectjweaver:1.8.11'
     //AWS
     implementation 'org.springframework.cloud:spring-cloud-starter-aws'
+    //RabbitMQ
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
 }
 
 dependencyManagement {
