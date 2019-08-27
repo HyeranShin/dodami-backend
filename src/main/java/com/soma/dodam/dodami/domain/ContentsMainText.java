@@ -9,30 +9,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Contents {
+public class ContentsMainText {
 
     @Id
     @GeneratedValue
     private Long idx;
 
     @Column
-    private Integer categoryIdx;
+    private Long contentsIdx;
 
     @Column
-    private String title;
+    private Long time;
 
     @Column
-    private String summary;
-
-    @Column
-    private String mainText;
-
-    @Column
-    private Long playTime;
-
-    @Column
-    private String wavUrl;
+    private String text;
 }

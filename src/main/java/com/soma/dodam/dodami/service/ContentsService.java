@@ -2,10 +2,12 @@ package com.soma.dodam.dodami.service;
 
 import com.soma.dodam.dodami.domain.Contents;
 import com.soma.dodam.dodami.domain.ContentsImg;
+import com.soma.dodam.dodami.domain.ContentsMainText;
 import com.soma.dodam.dodami.dto.response.ContentsResDto;
 import com.soma.dodam.dodami.exception.NoResultException;
 import com.soma.dodam.dodami.exception.NotExistException;
 import com.soma.dodam.dodami.repository.ContentsImgRepository;
+import com.soma.dodam.dodami.repository.ContentsMainTextRepository;
 import com.soma.dodam.dodami.repository.ContentsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,12 +24,15 @@ import java.util.stream.Collectors;
 public class ContentsService {
 
     private final ContentsRepository contentsRepository;
+    private final ContentsMainTextRepository contentsMainTextRepository;
     private final ContentsImgRepository contentsImgRepository;
 
     public List<ContentsResDto> getContentsList(Integer categoryIdx) {
         List<ContentsResDto> contentsList = contentsRepository.findAllByCategoryIdx(categoryIdx)
                 .stream()
-                .map(contents -> new ContentsResDto(contents, contentsImgRepository.findAllByContentsIdx(contents.getIdx())))
+                .map(contents -> new ContentsResDto(contents,
+                        contentsMainTextRepository.findAllByContentsIdx(contents.getIdx()),
+                        contentsImgRepository.findAllByContentsIdx(contents.getIdx())))
                 .collect(Collectors.toList());
 
         if(contentsList.size() == 0) {
@@ -41,9 +46,10 @@ public class ContentsService {
         Contents contents = contentsRepository.findById(contentsIdx)
                 .orElseThrow(() -> new NotExistException("contentsIdx", "존재하지 않는 컨텐츠입니다."));
 
+        List<ContentsMainText> contentsMainText = contentsMainTextRepository.findAllByContentsIdx(contentsIdx);
         List<ContentsImg> contentsImg = contentsImgRepository.findAllByContentsIdx(contentsIdx);
 
-        return new ContentsResDto(contents, contentsImg);
+        return new ContentsResDto(contents, contentsMainText, contentsImg);
     }
 
     public List<ContentsResDto> getNewContentsList() {
@@ -52,7 +58,9 @@ public class ContentsService {
 
         List<ContentsResDto> newContentsList = contentsResDtoPage.getContent()
                 .stream()
-                .map(contents -> new ContentsResDto(contents, null))
+                .map(contents -> new ContentsResDto(contents,
+                        contentsMainTextRepository.findAllByContentsIdx(contents.getIdx()),
+                        contentsImgRepository.findAllByContentsIdx(contents.getIdx())))
                 .collect(Collectors.toList());
 
         if(newContentsList.size() == 0) {

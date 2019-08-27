@@ -3,6 +3,7 @@ package com.soma.dodam.dodami.dto.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.soma.dodam.dodami.domain.Contents;
 import com.soma.dodam.dodami.domain.ContentsImg;
+import com.soma.dodam.dodami.domain.ContentsMainText;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 
@@ -22,7 +23,7 @@ public class ContentsResDto {
     private String summary;
 
     @ApiModelProperty(required = true, notes = "본문", position = 4)
-    private String mainText;
+    private List<ContentsMainTextResDto> mainText;
 
     @ApiModelProperty(required = true, notes = "재생 시간(초 단위)", example = "1800", position = 5)
     private Long playTime;
@@ -31,16 +32,29 @@ public class ContentsResDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<ContentsImgResDto> imgUrlResDto;
 
-    public ContentsResDto(Contents contents, List<ContentsImg> contentsImgs) {
+    @ApiModelProperty(required = true, notes = "컨텐츠 음성 파일", position = 7)
+    private String wavUrl;
+
+    public ContentsResDto(Contents contents, List<ContentsMainText> contentsMainTexts, List<ContentsImg> contentsImgs) {
         this.contentsIdx = contents.getIdx();
         this.title = contents.getTitle();
         this.summary = contents.getSummary();
-        this.mainText = contents.getMainText();
+        this.mainText = toTextResDto(contentsMainTexts);
         this.playTime = contents.getPlayTime();
-        this.imgUrlResDto = toResDto(contentsImgs);
+        this.imgUrlResDto = toImgResDto(contentsImgs);
+        this.wavUrl = contents.getWavUrl();
     }
 
-    public List<ContentsImgResDto> toResDto(List<ContentsImg> contentsImgs) {
+    public List<ContentsMainTextResDto> toTextResDto(List<ContentsMainText> contentsMainTexts) {
+        List<ContentsMainTextResDto> mainTexts = contentsMainTexts
+                .stream()
+                .map(mainText -> new ContentsMainTextResDto(mainText))
+                .collect(Collectors.toList());
+
+        return mainTexts;
+    }
+
+    public List<ContentsImgResDto> toImgResDto(List<ContentsImg> contentsImgs) {
         List<ContentsImgResDto> imgUrls = contentsImgs
                 .stream()
                 .map(contentsImg -> new ContentsImgResDto(contentsImg))
