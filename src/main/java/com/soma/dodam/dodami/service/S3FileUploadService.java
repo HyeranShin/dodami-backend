@@ -19,12 +19,12 @@ import java.util.UUID;
 public class S3FileUploadService {
 
     //버킷 이름 동적 할당
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
+//    @Value("${cloud.aws.s3.bucket}")
+    private String bucket = "dodami-bucket";
 
     //버킷 주소 동적 할당
-    @Value("${cloud.aws.s3.bucket_url}")
-    private String defaultUrl;
+//    @Value("${cloud.aws.s3.bucket_url}")
+    private String defaultUrl = "https://s3.ap-northeast-2.amazonaws.com/dodami-bucket";
 
     private final AmazonS3Client amazonS3Client;
 
