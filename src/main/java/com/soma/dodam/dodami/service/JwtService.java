@@ -20,7 +20,7 @@ public class JwtService {
 //    @Value("${JWT.ISSUER")
     private String ISSUER = "DODAMI";
 
-    @Value("${JWT.SECRET}")
+//    @Value("${JWT.SECRET}")
     private String SECRET = "sdjaf3i@#$%13469ktmrEOGJERAfier*&";
 
     /**
