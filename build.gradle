@@ -38,7 +38,7 @@ dependencies {
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
     //Jwt
     implementation 'com.auth0:java-jwt:3.4.1'
-    implementation 'com.aspectj:aspectjweaver:1.9.4'
+//    implementation 'com.aspectj:aspectjweaver:1.9.4'
     //AWS
     implementation 'org.springframework.cloud:spring-cloud-starter-aws'
     //RabbitMQ
