@@ -11,8 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.util.Date;
-
 @EnableJpaAuditing  //JPA Auditing 활성화
 @SpringBootApplication
 public class DodamiApplication {
