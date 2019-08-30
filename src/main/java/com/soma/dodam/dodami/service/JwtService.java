@@ -17,11 +17,11 @@ import static com.auth0.jwt.JWT.require;
 @Service
 public class JwtService {
 
-    @Value("${JWT.ISSUER")
-    private String ISSUER;
+//    @Value("${JWT.ISSUER")
+    private String ISSUER = "DODAMI";
 
     @Value("${JWT.SECRET}")
-    private String SECRET;
+    private String SECRET = "sdjaf3i@#$%13469ktmrEOGJERAfier*&";
 
     /**
      * 토큰 생성
