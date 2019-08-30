@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Getter
 @Entity
 @Table(name = "subscription", schema = "public")
-public class Subscription {
+public class Subscription extends BaseTimeEntity {
 
     @Id
     private Integer idx;

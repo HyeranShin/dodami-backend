@@ -5,28 +5,26 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
+@Table(name = "letter", schema = "public")
 public class Letter extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue
-    Long idx;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long idx;
 
     @Column
-    Long userIdx;
+    private Long userIdx;
 
     @Column
-    String title;
+    private String title;
 
     @Column
-    String content;
+    private String content;
 
     @Builder
     public Letter(Long userIdx, String title, String content) {
