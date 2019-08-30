@@ -7,12 +7,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.Scheduled;
 
 @EnableJpaAuditing  //JPA Auditing 활성화
-@SpringBootApplication
+@SpringBootApplication(exclude = ContextRegionProviderAutoConfiguration.class)
 public class DodamiApplication {
 
     public static final String APPLICATION_LOCATIONS = "spring.config.location="
