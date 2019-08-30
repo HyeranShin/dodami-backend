@@ -56,6 +56,7 @@ public class ContentsService {
         Pageable pageable = PageRequest.of(1, 10, new Sort(Sort.Direction.DESC, "createdDate"));
         Page<Contents> contentsResDtoPage = contentsRepository.findAll(pageable);
 
+//        List<Contents> contentsResDtoPage = contentsRepository.findAll(new Sort(Sort.Direction.DESC, "createdDate"));
         List<ContentsResDto> newContentsList = contentsResDtoPage.getContent()
                 .stream()
                 .map(contents -> new ContentsResDto(contents,
