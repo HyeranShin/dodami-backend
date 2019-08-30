@@ -25,13 +25,11 @@ public class ResourceController {
     private final S3FileUploadService s3FileUploadService;
 
     @ApiOperation(value = "리소스 등록", notes = "성공 시 S3에 저장된 리소스 url을 바디에 담아 반환합니다.")
-    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     @ApiResponses({
             @ApiResponse(code = 201, message = "리소스 저장 성공"),
             @ApiResponse(code = 401, message = "권한 없음", response = ExceptionDto.class),
             @ApiResponse(code = 500, message = "내부 서버 에러")
     })
-    @Auth
     @PostMapping
     public ResponseEntity<ResourceResDto> uploadResource(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResourceResDto(s3FileUploadService.upload(multipartFile)));
