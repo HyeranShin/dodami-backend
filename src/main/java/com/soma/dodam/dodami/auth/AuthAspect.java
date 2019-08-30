@@ -1,6 +1,7 @@
 package com.soma.dodam.dodami.auth;
 
 import com.soma.dodam.dodami.domain.User;
+import com.soma.dodam.dodami.exception.NotExistException;
 import com.soma.dodam.dodami.exception.UnAuthenticationException;
 import com.soma.dodam.dodami.repository.UserRepository;
 import com.soma.dodam.dodami.service.JwtService;
@@ -54,7 +55,7 @@ public class AuthAspect {
         //토큰 검사
         if (token == null) throw new UnAuthenticationException("token", "유효하지 않은 토큰입니다.");
         else {
-            final User user = userRepository.findByIdx(token.getUser_idx());
+            final User user = userRepository.findById(token.getUser_idx()).orElseThrow(() -> new NotExistException("token", "존재하지 않는 유저입니다."));
             //유효 사용자 검사
             if (user == null) throw new UnAuthenticationException("token", "해당하는 유저가 존재하지 않습니다.");
             return user;

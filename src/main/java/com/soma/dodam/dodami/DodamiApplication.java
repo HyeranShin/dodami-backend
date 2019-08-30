@@ -1,6 +1,6 @@
 package com.soma.dodam.dodami;
 
-import com.soma.dodam.dodami.rabbitmq.Producer;
+//import com.soma.dodam.dodami.rabbitmq.Producer;
 import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,26 +27,26 @@ public class DodamiApplication {
                 .run(args);
     }
 
-    @Value("${myqueue}")
-    String queue;
-
-    @Bean
-    Queue queue() {
-        return new Queue(queue, false);
-    }
-
-    @Autowired
-    Producer producer;
-
-    @Bean
-    CommandLineRunner sender(Producer producer) {
-        return args -> {
-            producer.sendTo(queue, "Hello !!!");
-        };
-    }
-
-    @Scheduled(fixedDelay = 500L)
-    public void sendScheduleMessage() {
-        producer.sendTo(queue, "Message Delevery : " + new Date());
-    }
+//    @Value("${myqueue}")
+//    String queue;
+//
+//    @Bean
+//    Queue queue() {
+//        return new Queue(queue, false);
+//    }
+//
+//    @Autowired
+//    Producer producer;
+//
+//    @Bean
+//    CommandLineRunner sender(Producer producer) {
+//        return args -> {
+//            producer.sendTo(queue, "Hello !!!");
+//        };
+//    }
+//
+//    @Scheduled(fixedDelay = 500L)
+//    public void sendScheduleMessage() {
+//        producer.sendTo(queue, "Message Delevery : " + new Date());
+//    }
 }

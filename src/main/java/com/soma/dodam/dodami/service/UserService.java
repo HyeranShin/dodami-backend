@@ -67,7 +67,9 @@ public class UserService {
     public ProfileResDto getProfile(User user) {
         SubscriptionResDto subscriptionResDto = null;
         if(user.getSubscriptionIdx() != 0) {
-            subscriptionResDto = new SubscriptionResDto(subscriptionRepository.findByIdx(user.getSubscriptionIdx()));
+            subscriptionResDto = new SubscriptionResDto(subscriptionRepository.findById(user.getSubscriptionIdx()).orElseThrow(
+                    () -> new NotExistException("subscriptionId", "존재하지 않는 구독권 번호입니다.")
+            ));
         }
         return ProfileResDto.builder()
                 .name(user.getName())
