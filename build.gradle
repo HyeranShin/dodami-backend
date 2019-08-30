@@ -43,6 +43,9 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-aws'
     //RabbitMQ
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    //PostgreSQL
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws-jdbc'
+    runtimeOnly 'org.postgresql:postgresql'
 }
 
 dependencyManagement {
