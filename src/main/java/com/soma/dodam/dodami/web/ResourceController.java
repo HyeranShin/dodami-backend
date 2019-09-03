@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-@Api(description = "리소스 REST API")
+@Api(description = "리소스 REST API (***이거 지금 문제가 있어서 이거 요청하면 서버가 다운돼요... 고치면 괄호 지울게요ㅠㅠ)")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/image")
