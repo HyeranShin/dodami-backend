@@ -12,7 +12,8 @@ public interface ContentsRepository extends JpaRepository<Contents, Long> {
 
     List<Contents> findAllByCategoryIdx(Integer categoryIdx);
 
-//    Page<Contents> findAllByCreatedDateDesc();
+    List<Contents> findAll(Sort sort);
+//    Page<Contents> findAll();
 
     Page<Contents> findAll(Pageable request);
 }

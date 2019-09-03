@@ -53,11 +53,13 @@ public class ContentsService {
     }
 
     public List<ContentsResDto> getNewContentsList() {
-        Pageable pageable = PageRequest.of(1, 10, new Sort(Sort.Direction.DESC, "createdDate"));
-        Page<Contents> contentsResDtoPage = contentsRepository.findAll(pageable);
+//        Pageable pageable = PageRequest.of(1, 10, new Sort(Sort.Direction.DESC, "createdDate"));
+//        Page<Contents> contentsResDtoPage = contentsRepository.findAll(pageable);
 
-//        List<Contents> contentsResDtoPage = contentsRepository.findAll(new Sort(Sort.Direction.DESC, "createdDate"));
-        List<ContentsResDto> newContentsList = contentsResDtoPage.getContent()
+//        List<Contents> contentsResDtoPage = contentsRepository.findAllOrderByCreatedDate(Sort.Direction.DESC);
+
+        List<Contents> contentsResDtoPage = contentsRepository.findAll(new Sort(Sort.Direction.DESC, "createdDate"));
+        List<ContentsResDto> newContentsList = contentsResDtoPage
                 .stream()
                 .map(contents -> new ContentsResDto(contents,
                         contentsMainTextRepository.findAllByContentsIdx(contents.getIdx()),
