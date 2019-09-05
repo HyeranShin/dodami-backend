@@ -22,6 +22,10 @@ spring:
     username: guest
     password: quest
     port: 5672
+  servlet:
+    multipart:
+      max-request-size: -1
+      max-file-size: -1
 
 JWT:
   ISSUER: DODAMI
