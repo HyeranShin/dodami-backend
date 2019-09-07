@@ -1,41 +1,39 @@
-package com.soma.dodam.dodami.rabbitmq;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
-
+//package com.soma.dodam.dodami.rabbitmq;
+//
+//import com.soma.dodam.dodami.rabbitmq.RabbitMQConfig;
+//import com.sun.xml.internal.rngom.parse.host.Base;
+//import org.jboss.logging.Logger;
+//import org.springframework.amqp.rabbit.core.RabbitTemplate;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.scheduling.annotation.Scheduled;
+//import org.springframework.stereotype.Component;
+//import org.springframework.util.StopWatch;
+//
+//import java.util.stream.IntStream;
+//
 //@Component
-//public class Producer {
-//    private static final Logger logger = LoggerFactory.getLogger(Producer.class);
+//public class SendSchedler {
 //
 //    @Autowired
 //    private RabbitTemplate rabbitTemplate;
 //
-//    public void sendTo(String routingKye, String message) {
-//        logger.info("send message....");
+//    private static final Logger logger = Logger.getLogger(SendSchedler.class);
 //
-//        this.rabbitTemplate.convertAndSend(routingKye, message);
+//    @Scheduled(cron = "0/3 * * * * *")
+//    public void onSend() {
+//        logger.info("Sending message... Start");
+//
+//        StopWatch stopWatch = new StopWatch();
+//        stopWatch.start();
+//        IntStream.range(1, 15000)
+//                .parallel()
+//                .forEach(val -> {
+//                    rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_NAME, new Base(val, "Hello, RabbitMQ! 1"));
+//                });
+//        stopWatch.stop();
+//        logger.info(stopWatch.toString());
+//        logger.info("Sending message... End");
 //    }
 //}
-
-public class Producer {
-
-    public static void main(String[] args) {
-
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-
-        AmqpTemplate amqpTemplate = context.getBean(AmqpTemplate.class);
-
-        amqpTemplate.convertAndSend("simplequeue", "Hello World");
-
-    }
-
-}
-
-
-
+//
+//
