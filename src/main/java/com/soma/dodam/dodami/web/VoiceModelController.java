@@ -9,14 +9,17 @@ import com.soma.dodam.dodami.dto.request.ModVoiceModelImgReqDto;
 import com.soma.dodam.dodami.dto.request.ModVoiceModelNameReqDto;
 import com.soma.dodam.dodami.dto.request.VoiceModelReqDto;
 import com.soma.dodam.dodami.dto.response.VoiceModelResDto;
+import com.soma.dodam.dodami.service.S3FileUploadService;
 import com.soma.dodam.dodami.service.VoiceModelService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 
 @Api(description = "음성 모델 REST API")
@@ -26,9 +29,13 @@ import java.util.List;
 public class VoiceModelController {
 
     private final VoiceModelService voiceModelService;
+    private final S3FileUploadService s3FileUploadService;
 
     @ApiOperation(value = "음성 모델 추가")
-    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header"),
+            @ApiImplicitParam(name = "name", value = "이름", required = true, example = "아빠")
+    })
     @ApiResponses({
             @ApiResponse(code = 201, message = "음성 모델 추가 성공"),
             @ApiResponse(code = 400, message = "음성 모델 추가 실패", response = ExceptionDto.class),
@@ -38,7 +45,14 @@ public class VoiceModelController {
     @Auth
     @PostMapping("")
     public ResponseEntity<Void> addVoiceModel(HttpServletRequest httpServletRequest,
-                                        @RequestBody VoiceModelReqDto voiceModelReqDto) {
+                                        String name,
+                                        @RequestPart(value = "profile", required = false) final MultipartFile photo) throws IOException {
+        VoiceModelReqDto voiceModelReqDto = new VoiceModelReqDto();
+
+        voiceModelReqDto.setName(name);
+        if(photo != null) {
+            voiceModelReqDto.setImgUrl(s3FileUploadService.upload(photo));
+        }
         User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
         voiceModelReqDto.setUserIdx(user.getIdx());
         voiceModelService.addVoiceModel(voiceModelReqDto);
