@@ -1,20 +1,22 @@
 //package com.soma.dodam.dodami.rabbitmq;
 //
-//import java.util.concurrent.CountDownLatch;
+//import lombok.extern.slf4j.Slf4j;
+//import org.springframework.amqp.core.Queue;
+//import org.springframework.amqp.rabbit.annotation.RabbitListener;
+//import org.springframework.context.annotation.Bean;
 //import org.springframework.stereotype.Component;
 //
 //@Component
+//@Slf4j
 //public class Receiver {
 //
-//    private CountDownLatch latch = new CountDownLatch(1);
-//
-//    public void receiveMessage(String message) {
-//        System.out.println("Received <" + message + ">");
-//        latch.countDown();
+//    @Bean
+//    Queue queue(){
+//        return new Queue("CustomerQ",false);
 //    }
 //
-//    public CountDownLatch getLatch() {
-//        return latch;
+//    @RabbitListener(queues = {"TrainQ", "SynthQ"})
+//    public void processMessage(String email){
+//        log.info("Recived Message {} ", email);
 //    }
-//
 //}

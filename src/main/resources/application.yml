@@ -17,11 +17,11 @@ spring:
       hibernate:
         ddl-auto: create-drop
       show-sql: true
-  rabbitmq:
-    host: localhost
-    username: guest
-    password: quest
-    port: 5672
+#  rabbitmq:
+#    host: localhost
+#    username: guest
+#    password: quest
+#    port: 5672
   servlet:
     multipart:
       max-request-size: -1
