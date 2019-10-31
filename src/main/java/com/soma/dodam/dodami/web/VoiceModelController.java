@@ -9,6 +9,7 @@ import com.soma.dodam.dodami.dto.request.ModVoiceModelImgReqDto;
 import com.soma.dodam.dodami.dto.request.ModVoiceModelNameReqDto;
 import com.soma.dodam.dodami.dto.request.VoiceModelReqDto;
 import com.soma.dodam.dodami.dto.response.VoiceModelResDto;
+import com.soma.dodam.dodami.exception.NotExistException;
 import com.soma.dodam.dodami.service.S3FileUploadService;
 import com.soma.dodam.dodami.service.VoiceModelService;
 import io.swagger.annotations.*;
@@ -125,9 +126,14 @@ public class VoiceModelController {
     @PutMapping("/{idx}/image")
     public ResponseEntity<Void> modifyVoiceModelImg(HttpServletRequest httpServletRequest,
                                                     @PathVariable Long idx,
-                                                    @RequestBody ModVoiceModelImgReqDto modVoiceModelImgReqDto) {
+                                                    @RequestPart(value = "profile") final MultipartFile photo) throws IOException {
+        if(photo == null) {
+            throw new NotExistException("photo", "사진을 선택해주세요.");
+        }
         User user = (User)httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+        ModVoiceModelImgReqDto modVoiceModelImgReqDto = new ModVoiceModelImgReqDto();
         modVoiceModelImgReqDto.setIdx(idx);
+        modVoiceModelImgReqDto.setImgUrl(s3FileUploadService.upload(photo));
         voiceModelService.modifyVoiceModelImg(user.getIdx(), modVoiceModelImgReqDto);
         return ResponseEntity.ok().build();
     }
