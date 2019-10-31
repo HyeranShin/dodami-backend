@@ -3,7 +3,9 @@ package com.soma.dodam.dodami.dto.request;
 import com.soma.dodam.dodami.domain.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
+import lombok.Setter;
 
+@Setter
 @Getter
 public class SignUpReqDto {
 
