@@ -8,6 +8,7 @@ import com.soma.dodam.dodami.dto.request.ProfileUrlReqDto;
 import com.soma.dodam.dodami.dto.request.SignInReqDto;
 import com.soma.dodam.dodami.dto.request.SignUpReqDto;
 import com.soma.dodam.dodami.dto.response.ProfileResDto;
+import com.soma.dodam.dodami.exception.NotExistException;
 import com.soma.dodam.dodami.service.JwtService;
 import com.soma.dodam.dodami.service.S3FileUploadService;
 import com.soma.dodam.dodami.service.UserService;
@@ -32,7 +33,7 @@ public class UserController {
     private final JwtService jwtService;
     private final S3FileUploadService s3FileUploadService;
 
-    @ApiOperation(value = "회원 가입", notes = "유효성 검사를 수행합니다. 하단 Models의 SignUpReqDto를 참고하세요.\n성공 시 토큰을 헤더에 담아 반환합니다.")
+    @ApiOperation(value = "회원 가입", notes = "유효성 검사를 수행합니다.\n성공 시 토큰을 헤더에 담아 반환합니다.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "회원 가입 성공"),
             @ApiResponse(code = 400, message = "잘못된 요쳥(유효성 검사 에러 / 이미 가입된 정보)", response = ExceptionDto.class),
@@ -94,9 +95,12 @@ public class UserController {
     @Auth
     @PutMapping("")
     public ResponseEntity<Void> modifyProfileUrl(HttpServletRequest httpServletRequest,
-                                                 @RequestBody ProfileUrlReqDto profileUrlReqDto) {
+                                                 @RequestPart(value = "profile") final MultipartFile photo) throws IOException {
+        if(photo == null) {
+            throw new NotExistException("photo", "사진을 선택해주세요.");
+        }
         User user = (User) httpServletRequest.getAttribute(AuthAspect.USER_KEY);
-        userService.modifyProfileUrl(user.getIdx(), profileUrlReqDto.getProfileUrl());
+        userService.modifyProfileUrl(user.getIdx(), s3FileUploadService.upload(photo));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
