@@ -37,7 +37,8 @@ cloud:
       auto: false
     s3:
       bucket: dodami-bucket
-      bucket_url: https://s3.ap-northeast-2.amazonaws.com/dodami-bucket
+      bucket_url: https://dodami-bucket.s3.ap-northeast-2.amazonaws.com/
+#      bucket_url: https://s3.ap-northeast-2.amazonaws.com/dodami-bucket
     region:
       auto: false
       static: ap-northeast-2
