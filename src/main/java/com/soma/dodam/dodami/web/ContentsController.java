@@ -28,6 +28,7 @@ public class ContentsController {
 
 
     @ApiOperation(value = "컨텐츠 음성 조회")
+    @ApiImplicitParam(name = "Authorization", value = "JWT Token", required = true, dataType = "string", paramType = "header")
     @GetMapping("/{voiceModelIdx}/{contentsIdx}")
     @Auth
     public ResponseEntity<ContentsVoiceResDto> getContentsVoice(HttpServletRequest httpServletRequest,
