@@ -4,7 +4,6 @@ import com.soma.dodam.dodami.auth.Auth;
 import com.soma.dodam.dodami.auth.AuthAspect;
 import com.soma.dodam.dodami.domain.User;
 import com.soma.dodam.dodami.dto.ExceptionDto;
-import com.soma.dodam.dodami.dto.request.ProfileUrlReqDto;
 import com.soma.dodam.dodami.dto.request.SignInReqDto;
 import com.soma.dodam.dodami.dto.request.SignUpReqDto;
 import com.soma.dodam.dodami.dto.response.ProfileResDto;

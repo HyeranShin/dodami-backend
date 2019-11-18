@@ -3,12 +3,15 @@ package com.soma.dodam.dodami.service;
 import com.soma.dodam.dodami.domain.Contents;
 import com.soma.dodam.dodami.domain.ContentsImg;
 import com.soma.dodam.dodami.domain.ContentsMainText;
+import com.soma.dodam.dodami.domain.ContentsVoice;
 import com.soma.dodam.dodami.dto.response.ContentsResDto;
+import com.soma.dodam.dodami.dto.response.ContentsVoiceResDto;
 import com.soma.dodam.dodami.exception.NoResultException;
 import com.soma.dodam.dodami.exception.NotExistException;
 import com.soma.dodam.dodami.repository.ContentsImgRepository;
 import com.soma.dodam.dodami.repository.ContentsMainTextRepository;
 import com.soma.dodam.dodami.repository.ContentsRepository;
+import com.soma.dodam.dodami.repository.ContentsVoiceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +29,7 @@ public class ContentsService {
     private final ContentsRepository contentsRepository;
     private final ContentsMainTextRepository contentsMainTextRepository;
     private final ContentsImgRepository contentsImgRepository;
+    private final ContentsVoiceRepository contentsVoiceRepository;
 
     public List<ContentsResDto> getContentsList(Integer categoryIdx) {
         List<ContentsResDto> contentsList = contentsRepository.findAllByCategoryIdx(categoryIdx)
@@ -71,5 +75,11 @@ public class ContentsService {
         }
 
         return newContentsList;
+    }
+
+    public ContentsVoiceResDto getContentsVoice(Long userIdx, Long voiceModelIdx, Long contentsIdx) {
+        ContentsVoice contentsVoice = contentsVoiceRepository.findByUserIdxAndVoiceModelIdxAndContentsIdx(userIdx, voiceModelIdx, contentsIdx)
+                .orElseThrow(() -> new NotExistException("idx", "해당 유저의 해당 음성모델에 해당하는 음성이 존재하지 않습니다."));
+        return new ContentsVoiceResDto(contentsVoice);
     }
 }

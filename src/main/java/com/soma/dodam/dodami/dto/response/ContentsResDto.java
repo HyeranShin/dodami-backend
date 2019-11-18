@@ -32,9 +32,6 @@ public class ContentsResDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<ContentsImgResDto> imgUrlResDto;
 
-    @ApiModelProperty(required = true, notes = "컨텐츠 음성 파일", position = 7)
-    private String wavUrl;
-
     public ContentsResDto(Contents contents, List<ContentsMainText> contentsMainTexts, List<ContentsImg> contentsImgs) {
         this.contentsIdx = contents.getIdx();
         this.title = contents.getTitle();
@@ -42,7 +39,6 @@ public class ContentsResDto {
         this.mainText = toTextResDto(contentsMainTexts);
         this.playTime = contents.getPlayTime();
         this.imgUrlResDto = toImgResDto(contentsImgs);
-        this.wavUrl = contents.getWavUrl();
     }
 
     public List<ContentsMainTextResDto> toTextResDto(List<ContentsMainText> contentsMainTexts) {

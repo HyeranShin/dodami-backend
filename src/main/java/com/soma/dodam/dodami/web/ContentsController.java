@@ -1,7 +1,11 @@
 package com.soma.dodam.dodami.web;
 
+import com.soma.dodam.dodami.auth.Auth;
+import com.soma.dodam.dodami.auth.AuthAspect;
+import com.soma.dodam.dodami.domain.User;
 import com.soma.dodam.dodami.dto.ExceptionDto;
 import com.soma.dodam.dodami.dto.response.ContentsResDto;
+import com.soma.dodam.dodami.dto.response.ContentsVoiceResDto;
 import com.soma.dodam.dodami.service.ContentsService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Api(description = "컨텐츠 REST API")
@@ -20,6 +25,18 @@ import java.util.List;
 public class ContentsController {
 
     private final ContentsService contentsService;
+
+
+    @ApiOperation(value = "컨텐츠 음성 조회")
+    @GetMapping("/{userIdx}/{voiceModelIdx}/{contentsIdx}")
+//    @Auth
+    public ResponseEntity<ContentsVoiceResDto> getContentsVoice(HttpServletRequest httpServletRequest,
+                                                                @PathVariable Long userIdx,
+                                                                @PathVariable Long voiceModelIdx,
+                                                                @PathVariable Long contentsIdx) {
+        User user = (User) httpServletRequest.getAttribute(AuthAspect.USER_KEY);
+        return ResponseEntity.ok().body(contentsService.getContentsVoice(userIdx, voiceModelIdx, contentsIdx));
+    }
 
     @ApiOperation(value = "컨텐츠 조회"
 //            , notes = "컨텐츠 사진이 있는 경우에만 imgUrlResDto를 반환합니다."
