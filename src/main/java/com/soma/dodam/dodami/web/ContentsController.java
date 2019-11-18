@@ -28,14 +28,13 @@ public class ContentsController {
 
 
     @ApiOperation(value = "컨텐츠 음성 조회")
-    @GetMapping("/{userIdx}/{voiceModelIdx}/{contentsIdx}")
-//    @Auth
+    @GetMapping("/{voiceModelIdx}/{contentsIdx}")
+    @Auth
     public ResponseEntity<ContentsVoiceResDto> getContentsVoice(HttpServletRequest httpServletRequest,
-                                                                @PathVariable Long userIdx,
                                                                 @PathVariable Long voiceModelIdx,
                                                                 @PathVariable Long contentsIdx) {
         User user = (User) httpServletRequest.getAttribute(AuthAspect.USER_KEY);
-        return ResponseEntity.ok().body(contentsService.getContentsVoice(userIdx, voiceModelIdx, contentsIdx));
+        return ResponseEntity.ok().body(contentsService.getContentsVoice(user.getIdx(), voiceModelIdx, contentsIdx));
     }
 
     @ApiOperation(value = "컨텐츠 조회"
