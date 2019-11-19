@@ -30,4 +30,5 @@ public class Contents extends BaseTimeEntity {
 
     @Column
     private Long playTime;
+
 }

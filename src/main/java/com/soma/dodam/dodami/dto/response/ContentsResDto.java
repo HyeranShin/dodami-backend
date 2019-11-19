@@ -28,6 +28,8 @@ public class ContentsResDto {
     @ApiModelProperty(required = true, notes = "재생 시간(초 단위)", example = "1800", position = 5)
     private Long playTime;
 
+    private String wavUrl;
+
     @ApiModelProperty(notes = "컨텐츠 이미지", position = 6)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<ContentsImgResDto> imgUrlResDto;
