@@ -28,21 +28,17 @@ public class ContentsResDto {
     @ApiModelProperty(required = true, notes = "재생 시간(초 단위)", example = "1800", position = 5)
     private Long playTime;
 
-    @ApiModelProperty(required = true, notes = "컨텐츠 음성 파일", position = 7)
-    private String wavUrl;
-
     @ApiModelProperty(notes = "컨텐츠 이미지", position = 6)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<ContentsImgResDto> imgUrlResDto;
 
-    public ContentsResDto(Long contentsIdx, String title, String summary, List<ContentsMainTextResDto> mainText, Long playTime, String wavUrl, List<ContentsImgResDto> imgUrlResDto) {
-        this.contentsIdx = contentsIdx;
-        this.title = title;
-        this.summary = summary;
-        this.mainText = mainText;
-        this.playTime = playTime;
-        this.wavUrl = wavUrl;
-        this.imgUrlResDto = imgUrlResDto;
+    public ContentsResDto(Contents contents, List<ContentsMainText> contentsMainTexts, List<ContentsImg> contentsImgs) {
+        this.contentsIdx = contents.getIdx();
+        this.title = contents.getTitle();
+        this.summary = contents.getSummary();
+        this.mainText = toTextResDto(contentsMainTexts);
+        this.playTime = contents.getPlayTime();
+        this.imgUrlResDto = toImgResDto(contentsImgs);
     }
 
     public List<ContentsMainTextResDto> toTextResDto(List<ContentsMainText> contentsMainTexts) {
