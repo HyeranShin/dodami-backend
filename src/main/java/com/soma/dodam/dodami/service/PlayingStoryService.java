@@ -3,10 +3,12 @@ package com.soma.dodam.dodami.service;
 import com.soma.dodam.dodami.domain.Contents;
 import com.soma.dodam.dodami.domain.PlayingStory;
 import com.soma.dodam.dodami.dto.request.PlayedTimeReqDto;
+import com.soma.dodam.dodami.dto.response.ContentsImgResDto;
 import com.soma.dodam.dodami.dto.response.PlayingStoryResDto;
 import com.soma.dodam.dodami.exception.InvalidValueException;
 import com.soma.dodam.dodami.exception.NoResultException;
 import com.soma.dodam.dodami.exception.NotExistException;
+import com.soma.dodam.dodami.repository.ContentsImgRepository;
 import com.soma.dodam.dodami.repository.ContentsRepository;
 import com.soma.dodam.dodami.repository.PlayingStoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class PlayingStoryService {
 
     private final PlayingStoryRepository playingStoryRepository;
     private final ContentsRepository contentsRepository;
+    private final ContentsImgRepository contentsImgRepository;
 
     public void updatePlayedTime(Long userIdx, Long contentsIdx, PlayedTimeReqDto playedTimeReqDto) {
         Contents contents = contentsRepository.findById(contentsIdx)
@@ -51,7 +54,10 @@ public class PlayingStoryService {
     public List<PlayingStoryResDto> getPlayingList(Long idx) {
         List<PlayingStoryResDto> playingList = playingStoryRepository.findAllByUserIdx(idx)
                 .stream()
-                .map(playing -> new PlayingStoryResDto(playing))
+                .map(playing -> new PlayingStoryResDto(playing,
+                        contentsRepository.findById(playing.getContentsIdx())
+                                .orElseThrow(() -> new NotExistException("contentsIdx", "존재하지 않는 컨텐츠입니다.")),
+                        contentsImgRepository.findAllByContentsIdx(playing.getContentsIdx())))
                 .collect(Collectors.toList());
 
         if(playingList.size() == 0) {

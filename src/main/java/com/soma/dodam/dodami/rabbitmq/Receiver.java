@@ -17,7 +17,6 @@ public class Receiver {
 
     @RabbitListener(queues = {"EndQ"})
     public void processMessage(String email){
-        //
-        log.info("Recived Message {} ", email);
+        log.info("Received Message {} ", email);
     }
 }
