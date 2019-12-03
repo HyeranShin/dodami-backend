@@ -54,7 +54,7 @@ cloud:
       static: AWS_REGION
 ```
 ```
-$ sudo ./gradlew build
+$ ./gradlew build
 $ cd build/libs
 $ java -jar dodami-0.0.1-SNAPSHOT.jar
 ```
