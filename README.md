@@ -3,8 +3,8 @@
 
 # How To Start
 ```
-$ git clone https://github.com/HyeranShin/Dodami_Backend.git
-$ cd Dodami_Backend
+$ git clone https://github.com/HyeranShin/dodami-backend.git
+$ cd dodami-backend
 $ cd src/main
 $ mkdir resources
 $ cd resources
