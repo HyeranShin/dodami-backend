@@ -1,6 +1,12 @@
 # Architecture
 <img alt="Architecture" src="https://user-images.githubusercontent.com/38368820/69070402-6a55ae80-0a6b-11ea-825c-384e5d644b63.png">
 
+# ERD Diagram
+<img alt="ERD Diagram" src="https://user-images.githubusercontent.com/38368820/77454335-b9f21f80-6e3b-11ea-9e50-33442d348c86.png">
+
+# API
+<img width="880" alt="스크린샷 2020-03-25 오전 1 57 02" src="https://user-images.githubusercontent.com/38368820/77454481-eefe7200-6e3b-11ea-8172-a2c5b04253a5.png">
+
 # How To Start
 ```
 $ git clone https://github.com/HyeranShin/dodami-backend.git
