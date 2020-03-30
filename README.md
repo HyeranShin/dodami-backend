@@ -19,9 +19,6 @@ $ vi application.yml
 Enter your server information.
 ```yml
 spring:
-  h2:
-    console:
-      enabled: true
   jpa:
     properties:
       hibernate:
