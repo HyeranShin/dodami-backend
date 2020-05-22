@@ -30,7 +30,7 @@
 ## Architecture
 <img width="1387" alt="스크린샷 2020-05-19 오후 4 37 45" src="https://user-images.githubusercontent.com/38368820/82298649-62150680-99ef-11ea-95b5-2395a9f4bd00.png">
 
-## ERD Diagram
+## ERD
 <img alt="ERD Diagram" src="https://user-images.githubusercontent.com/38368820/77454335-b9f21f80-6e3b-11ea-9e50-33442d348c86.png">
 
 ## API
